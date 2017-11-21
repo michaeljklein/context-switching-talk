@@ -1,0 +1,1441 @@
+<a 
+ id="Navigation1"></a><a 
+ id="page.1"></a>
+                                                           
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<!-- html,htex4ht --> 
+<meta name="src" content="talk.tex"> 
+<link rel="stylesheet" type="text/css" href="talk.css"> 
+</head><body 
+>
+                                                           
+<a 
+ id="Navigation2"></a><a 
+ id="page.2"></a>                                                           
+<!--l. 42--><p class="noindent" >
+  <!--l. 42--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Context</span>
+  <span 
+class="rm-lmss-12x-x-120">Switching</span>                                                         
+    <ul class="itemize1">
+    <li class="itemize">
+    Projects
+    are
+    composed
+    of
+    different
+    contexts
+    </li>
+    <li class="itemize">
+    For
+    example,
+    when
+    working
+    with
+    a
+    RESTful
+    API,
+    we
+    have
+    to
+    switch
+    between
+    GET
+    operations
+    and
+    processing
+    the
+    data
+    </li>
+    <li class="itemize">
+    The
+    expense
+    in
+    time
+    and
+    effort
+    of
+    switching
+    contexts
+    is
+    called
+    <span 
+class="rm-lmsso-10x-x-109">context</span>
+    <span 
+class="rm-lmsso-10x-x-109">switching</span>
+    <span 
+class="rm-lmsso-10x-x-109">overhead</span></li></ul>                                              
+<a 
+ id="Navigation3"></a><a 
+ id="page.3"></a>                                                           
+                                                           
+<a 
+ id="Navigation4"></a><a 
+ id="page.4"></a>                                                           
+<!--l. 48--><p class="noindent" >
+  <!--l. 48--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Question</span>                                                          
+<!--l. 48--><p class="noindent" >How do you manage the overhead of switching contexts?
+                                                           
+<a 
+ id="Navigation5"></a><a 
+ id="page.5"></a>                                                           
+                                                           
+<a 
+ id="Navigation6"></a><a 
+ id="page.6"></a>                                                           
+<!--l. 66--><p class="noindent" >
+  <!--l. 66--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Debugging</span>
+  <span 
+class="rm-lmss-12x-x-120">example</span>                                                           
+    <ul class="itemize1">
+    <li class="itemize">
+    UI
+    crashes
+    when
+    a
+    number
+    beginning
+    with
+    9
+    is
+    input
+    </li>
+    <li class="itemize">
+    Look
+    at
+    text
+    processing
+    </li>
+    <li class="itemize">
+    Look
+    at
+    decimal
+    parser
+    </li>
+    <li class="itemize">
+    Finally
+    look
+    at
+    <span 
+class="rm-lmsso-10x-x-109">decimalDigits</span>
+    function:</li></ul>
+    <ul class="itemize1">
+    <li class="itemize">
+    It
+    should
+    be
+    <span 
+class="lmsy-10x-x-109">&#x2264; </span>9,
+    not
+    <span 
+class="lmmi-10x-x-109">&#x003C; </span>9,
+    and
+    it
+    only
+    gives
+    the
+    wrong
+    result
+    when
+    the
+    number
+    begins
+    with
+    9.</li></ul>                                                     
+<a 
+ id="Navigation7"></a><a 
+ id="page.7"></a>                                                           
+                                                           
+<a 
+ id="Navigation8"></a><a 
+ id="page.8"></a>                                                           
+<!--l. 89--><p class="noindent" >
+  <!--l. 89--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Psychology</span>
+  <span 
+class="rm-lmss-12x-x-120">of</span>
+  <span 
+class="rm-lmss-12x-x-120">Context</span>
+<span 
+class="rm-lmss-12x-x-120">Switching</span>                                                         
+    <ul class="itemize1">
+    <li class="itemize">
+    Studies,
+    etc.
+    </li>
+    <li class="itemize">
+    One
+    theory
+    calls
+    this
+    &#8220;Task-set
+    inertia&#8221;
+    </li>
+    <li class="itemize">
+    Your
+    task
+    gains
+    inertia
+    as
+    you
+    continue
+    and
+    it
+    takes
+    less
+    effort
+    to
+    continue,
+    just
+    like
+    taking
+    your
+    foot
+    off
+    the
+    gas
+    doesn&#8217;t
+    stop
+    the
+    car.
+    </li>
+    <li class="itemize">
+    Switching
+    from
+    one
+    context
+    to
+    a
+    radically
+    different
+    one
+    (an
+    180
+    deg
+    turn)
+    requires
+    that
+    you
+    make
+    a
+    full
+    stop,
+    reorient
+    yourself,
+    and
+    fully
+    accelerate.
+    You
+    lost
+    the
+    inertia
+    that
+    was
+    carrying
+    you
+    forward,
+    you
+    expended
+    effort
+    to
+    stop,
+    and
+    you
+    expended
+    effort
+    to
+    restart.
+    Doing
+    this
+    often
+    is
+    exhausting
+    and
+    inefficient.</li></ul>                                             
+<a 
+ id="Navigation9"></a><a 
+ id="page.9"></a>                                                           
+                                                           
+<a 
+ id="Navigation10"></a><a 
+ id="page.10"></a>                                                           
+<!--l. 100--><p class="noindent" >
+  <!--l. 100--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Sources</span>
+  <span 
+class="rm-lmss-12x-x-120">of</span>
+  <span 
+class="rm-lmss-12x-x-120">Overhead</span>                                                         
+    <ul class="itemize1">
+    <li class="itemize">
+    We
+    have
+    to
+    store
+    the
+    state
+    of
+    what
+    we&#8217;re
+    doing
+    in
+    short
+    term
+    memory
+    </li>
+    <li class="itemize">
+    We
+    may
+    have
+    to
+    adapt
+    our
+    environment
+    (Think
+    switching
+    IDEs
+    or
+    opening/closing
+    tabs)
+    </li>
+    <li class="itemize">
+    If
+    we&#8217;re
+    multitasking
+    *at
+    all*,
+    switching
+    contexts
+    has
+    all
+    the
+    <span 
+class="rm-lmsso-10x-x-109">stop</span>
+    <span 
+class="rm-lmsso-10x-x-109">the</span>
+    <span 
+class="rm-lmsso-10x-x-109">world</span>
+    problems
+    of
+    a
+    poorly
+    threaded
+    stop-the-world
+    garbage
+    collector
+    </li>
+    <li class="itemize">
+    We
+    have
+    to
+    either
+    fetch
+    or
+    recreate
+    the
+    state
+    of
+    the
+    other
+    context</li></ul>                                                
+<a 
+ id="Navigation11"></a><a 
+ id="page.11"></a>                                                           
+                                                           
+<a 
+ id="Navigation12"></a><a 
+ id="page.12"></a>                                                           
+<!--l. 116--><p class="noindent" >
+  <!--l. 116--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Car</span>
+  <span 
+class="rm-lmss-12x-x-120">analogy</span>                                                           
+    <ul class="itemize1">
+    <li class="itemize">If you&#8217;re not going very fast, it&#8217;s a lot easier to turn 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Try</span>
+        <span 
+class="rm-lmss-10">tapping</span>
+        <span 
+class="rm-lmss-10">slower</span></li></ul>
+    </li>
+    <li class="itemize">If we&#8217;re going fast, we can still turn slowly 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Try</span>
+        <span 
+class="rm-lmss-10">changing</span>
+        <span 
+class="rm-lmss-10">the</span>
+        <span 
+class="rm-lmss-10">tapping</span>
+        <span 
+class="rm-lmss-10">height</span>
+        <span 
+class="rm-lmss-10">more</span>
+        <span 
+class="rm-lmss-10">slowly</span></li></ul>
+    </li>
+    <li class="itemize">When going fast, the destination is reached more quickly but
+    mistakes are amplified</li></ul>                                   
+<a 
+ id="Navigation13"></a><a 
+ id="page.13"></a>                                                           
+                                                           
+<a 
+ id="Navigation14"></a><a 
+ id="page.14"></a>                                                           
+<!--l. 128--><p class="noindent" >
+  <!--l. 128--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Back</span>
+  <span 
+class="rm-lmss-12x-x-120">to</span>
+  <span 
+class="rm-lmss-12x-x-120">code</span>                                                               
+<!--l. 128--><p class="noindent" >How do these things translate to working with codebases? 
+    <ul class="itemize1">
+    <li class="itemize">
+    If
+    we
+    work
+    through
+    things
+    slowly,
+    it&#8217;s
+    much
+    easier
+    to
+    change
+    contexts,
+    but
+    we
+    get
+    less
+    done
+    </li>
+    <li class="itemize">
+    If
+    we
+    dig
+    into
+    a
+    part
+    of
+    the
+    code,
+    it&#8217;s
+    hard
+    to
+    extract
+    ourselves,
+    but
+    it
+    may
+    be
+    easier
+    to
+    drift
+    to
+    nearby
+    sections
+    </li>
+    <li class="itemize">
+    Keeping
+    high
+    and
+    low
+    level
+    code
+    in
+    mind
+    is
+    hard</li></ul>                                                   
+<a 
+ id="Navigation15"></a><a 
+ id="page.15"></a>                                                           
+                                                           
+<a 
+ id="Navigation16"></a><a 
+ id="page.16"></a>                                                           
+<!--l. 146--><p class="noindent" >
+  <!--l. 146--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">How</span>
+  <span 
+class="rm-lmss-12x-x-120">to</span>
+  <span 
+class="rm-lmss-12x-x-120">manage</span>
+<span 
+class="rm-lmss-12x-x-120">this?</span>                                                              
+    <dl class="enumerate"><dt class="enumerate">
+  1. </dt><dd 
+class="enumerate">Just don&#8217;t switch contexts 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Only</span>
+        <span 
+class="rm-lmss-10">work</span>
+        <span 
+class="rm-lmss-10">within</span>
+        <span 
+class="rm-lmss-10">one</span>
+        <span 
+class="rm-lmss-10">model</span>
+        </li>
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Don&#8217;t</span>
+        <span 
+class="rm-lmss-10">dig</span>
+        <span 
+class="rm-lmss-10">into</span>
+        <span 
+class="rm-lmss-10">details,</span>
+        <span 
+class="rm-lmss-10">or</span>
+        <span 
+class="rm-lmss-10">distribute</span>
+        <span 
+class="rm-lmss-10">tasks</span>
+        <span 
+class="rm-lmss-10">so</span>
+        <span 
+class="rm-lmss-10">each</span>
+        <span 
+class="rm-lmss-10">person</span>
+        <span 
+class="rm-lmss-10">stays</span>
+        <span 
+class="rm-lmss-10">within</span>
+        <span 
+class="rm-lmss-10">one</span>
+        <span 
+class="rm-lmss-10">general</span>
+        <span 
+class="rm-lmss-10">context</span></li></ul>
+    </dd><dt class="enumerate">
+  2. </dt><dd 
+class="enumerate">Minimize the overhead required to switch contexts 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Keep</span>
+        <span 
+class="rm-lmss-10">coding</span>
+        <span 
+class="rm-lmss-10">style</span>
+        <span 
+class="rm-lmss-10">consistent</span>
+        </li>
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Have</span>
+        <span 
+class="rm-lmss-10">an</span>
+        <span 
+class="rm-lmss-10">architecture</span>
+        <span 
+class="rm-lmss-10">that&#8217;s</span>
+        <span 
+class="rm-lmss-10">easy</span>
+        <span 
+class="rm-lmss-10">to</span>
+        <span 
+class="rm-lmss-10">navigate</span>
+        </li>
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">Increase</span>
+        <span 
+class="rm-lmss-10">rapport</span>
+        <span 
+class="rm-lmss-10">between</span>
+        <span 
+class="rm-lmss-10">sections</span></li></ul>
+    </dd></dl>                                                      
+<a 
+ id="Navigation17"></a><a 
+ id="page.17"></a>                                                           
+                                                           
+<a 
+ id="Navigation18"></a><a 
+ id="page.18"></a>                                                           
+<!--l. 171--><p class="noindent" >
+  <!--l. 171--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Minimizing</span>
+  <span 
+class="rm-lmss-12x-x-120">overhead</span>                                                          
+<!--l. 171--><p class="noindent" >We can minimize context switching overhead through good abstractions.
+<!--l. 171--><p class="noindent" >This allows us to 
+    <dl class="enumerate"><dt class="enumerate">
+  1. </dt><dd 
+class="enumerate">
+    Magnify
+    small
+    actions
+    in
+    controlled
+    ways
+    </dd><dt class="enumerate">
+  2. </dt><dd 
+class="enumerate">
+    Utilize
+    similar
+    patterns
+    across
+    a
+    diverse
+    codebase</dd></dl>                                               
+<a 
+ id="Navigation19"></a><a 
+ id="page.19"></a>                                                           
+                                                           
+<a 
+ id="Navigation20"></a><a 
+ id="page.20"></a>                                                           
+<!--l. 180--><p class="noindent" >
+  <!--l. 180--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">What&#8217;s</span>
+  <span 
+class="rm-lmss-12x-x-120">the</span>
+  <span 
+class="rm-lmss-12x-x-120">point</span>
+  <span 
+class="rm-lmss-12x-x-120">of</span>
+  <span 
+class="rm-lmss-12x-x-120">an</span>
+<span 
+class="rm-lmss-12x-x-120">abstraction?</span>                                                      
+<!--l. 180--><p class="noindent" >To factor out repeated patterns and operations.
+<!--l. 180--><p class="noindent" >The best abstractions: 1) make the code easier to understand, 2) make
+it shorter, 3) make it faster.
+<!--l. 180--><p class="noindent" >Anything that does the opposite is not a good abstraction.
+                                                           
+<a 
+ id="Navigation21"></a><a 
+ id="page.21"></a>                                                           
+                                                           
+<a 
+ id="Navigation22"></a><a 
+ id="page.22"></a>                                                           
+<!--l. 189--><p class="noindent" >
+  <!--l. 189--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">What</span>
+  <span 
+class="rm-lmss-12x-x-120">makes</span>
+  <span 
+class="rm-lmss-12x-x-120">a</span>
+  <span 
+class="rm-lmss-12x-x-120">good</span>
+<span 
+class="rm-lmss-12x-x-120">abstraction?</span>                                                      
+<!--l. 189--><p class="noindent" >What, in your opinion, makes a good abstraction?
+<!--l. 189--><p class="noindent" >&#8220;All problems in computer science can be solved by another level of
+indirection, except for the problem of too many layers of indirection.&#8221;
+â&#x0102;&#x0218; David J. Wheeler
+                                                           
+<a 
+ id="Navigation23"></a><a 
+ id="page.23"></a>                                                           
+                                                           
+<a 
+ id="Navigation24"></a><a 
+ id="page.24"></a>                                                           
+<!--l. 209--><p class="noindent" >
+  <!--l. 209--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">What</span>
+  <span 
+class="rm-lmss-12x-x-120">makes</span>
+  <span 
+class="rm-lmss-12x-x-120">a</span>
+  <span 
+class="rm-lmss-12x-x-120">good</span>
+  <span 
+class="rm-lmss-12x-x-120">abstraction?</span>
+<span 
+class="rm-lmss-12x-x-120">Cont.</span>                                                              
+<!--l. 209--><p class="noindent" >Abstractions deal with the problem of specificity: The more specific, the
+more useful in one case and useless in the general case. The less specific,
+the more useless in any specific case.
+<!--l. 209--><p class="noindent" >HAMMER SCREWDRIVER COMBO
+<!--l. 209--><p class="noindent" >&#8220;The key to making programs fast is to make them do practically
+nothing.&#8221; &#8211; Mike Haertel, original author of GNU grep
+                                                           
+<a 
+ id="Navigation25"></a><a 
+ id="page.25"></a>                                                           
+                                                           
+<a 
+ id="Navigation26"></a><a 
+ id="page.26"></a>                                                           
+<!--l. 220--><p class="noindent" >
+  <!--l. 220--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">What</span>
+  <span 
+class="rm-lmss-12x-x-120">makes</span>
+  <span 
+class="rm-lmss-12x-x-120">a</span>
+  <span 
+class="rm-lmss-12x-x-120">good</span>
+  <span 
+class="rm-lmss-12x-x-120">abstraction?</span>
+<span 
+class="rm-lmss-12x-x-120">Cont.</span>                                                              
+<!--l. 220--><p class="noindent" >In my opinion, a good abstraction takes a common yet restrictive
+pattern that is not bound to a single domain and provides a common
+interface.
+<!--l. 220--><p class="noindent" >A lens example: &#8216;_head&#8217; provides access to a large number of container
+types that have a first value.
+                                                           
+<a 
+ id="Navigation27"></a><a 
+ id="page.27"></a>                                                           
+                                                           
+<a 
+ id="Navigation28"></a><a 
+ id="page.28"></a>                                                           
+<!--l. 232--><p class="noindent" >
+  <!--l. 232--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Types</span>
+  <span 
+class="rm-lmss-12x-x-120">of</span>
+  <span 
+class="rm-lmss-12x-x-120">abstractions</span>                                                      
+<!--l. 232--><p class="noindent" >I break abstractions into three types: 
+    <dl class="enumerate"><dt class="enumerate">
+  1. </dt><dd 
+class="enumerate">
+    Generics:
+    Methods
+    that
+    &#8220;do
+    the
+    same
+    thing&#8221;
+    in
+    differing
+    contexts
+    </dd><dt class="enumerate">
+  2. </dt><dd 
+class="enumerate">
+    Transformers:
+    Methods
+    for
+    transferring
+    a
+    method
+    between
+    contexts
+    </dd><dt class="enumerate">
+  3. </dt><dd 
+class="enumerate">
+    Combinators:
+    Methods
+    of
+    combining
+    functions
+    that
+    behave
+    a
+    certain
+    way</dd></dl>                                                   
+<a 
+ id="Navigation29"></a><a 
+ id="page.29"></a>                                                           
+                                                           
+<a 
+ id="Navigation30"></a><a 
+ id="page.30"></a>                                                           
+<!--l. 251--><p class="noindent" >
+  <!--l. 251--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Generic</span>
+  <span 
+class="rm-lmss-12x-x-120">classes</span>                                                            
+<!--l. 251--><p class="noindent" >A function that does exactly the same thing in a number of contexts
+<!--tex4ht:inline--><div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"><col 
+id="TBL-1-2"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-1"  
+class="td11">Class                </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-2"  
+class="td11">Use when you know:              </td>
+<td  id="TBL-1-1-3"  
+class="td10">Use it to:           </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-1"  
+class="td11">Show</td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-2"  
+class="td11">How to convert it to a String   </td>
+<td  id="TBL-1-2-3"  
+class="td10">Show things        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-3-1"  
+class="td11">Semigroup          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-3-2"  
+class="td11">How to combine it associatively</td>
+<td  id="TBL-1-3-3"  
+class="td10">Simplify your style</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-4-1"  
+class="td11">Alternative         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-4-2"  
+class="td11">When it fails                        </td>
+<td  id="TBL-1-4-3"  
+class="td10">Try, try again      </td></tr></table>
+</div> Limits: 
+    <ul class="itemize1">
+    <li class="itemize">
+    Instances
+    must
+    be
+    defined
+    for
+    many
+    types
+    manually
+    </li>
+    <li class="itemize">
+    You&#8217;re
+    trusting
+    that
+    it&#8217;s
+    implemented
+    properly</li></ul>                                               
+<a 
+ id="Navigation31"></a><a 
+ id="page.31"></a>                                                           
+                                                           
+<a 
+ id="Navigation32"></a><a 
+ id="page.32"></a>                                                           
+<!--l. 277--><p class="noindent" >
+  <!--l. 277--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Transformer</span>
+  <span 
+class="rm-lmss-12x-x-120">classes</span>                                                            
+<!--l. 277--><p class="noindent" >A method of transferring a method from one context to another
+<!--tex4ht:inline--><div class="tabular"> <table id="TBL-2" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-2-1g"><col 
+id="TBL-2-1"><col 
+id="TBL-2-2"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-1-1"  
+class="td11">Class                                                 </td><td  style="white-space:nowrap; text-align:left;" id="TBL-2-1-2"  
+class="td11">Use when you know:                        </td>
+<td  id="TBL-2-1-3"  
+class="td10">Use it to:                                            </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-2-1"  
+class="td11">Functor</td><td  style="white-space:nowrap; text-align:left;" id="TBL-2-2-2"  
+class="td11">How to apply a function to it             </td>
+<td  id="TBL-2-2-3"  
+class="td10">Map generically                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-3-1"  
+class="td11">folds                                                  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-2-3-2"  
+class="td11">How to reduce it with a binary function</td>
+<td  id="TBL-2-3-3"  
+class="td10">Extend binary operations to more arguments</td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-4-1"  
+class="td11">unfolds                                               </td><td  style="white-space:nowrap; text-align:left;" id="TBL-2-4-2"  
+class="td11">How to extend it                             </td>
+<td  id="TBL-2-4-3"  
+class="td10">Build recursively-defined data structures      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-5-1"  
+class="td11">                                   </td></tr></table>
+</div> Limits: 
+    <ul class="itemize1">
+    <li class="itemize">Builders may look radically different for different types 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">For</span>
+        <span 
+class="rm-lmss-10">example,</span>
+        <span 
+class="rm-lmss-10">vectors</span>
+        <span 
+class="rm-lmss-10">vs.</span>
+        <span 
+class="rm-lmss-10">cons</span>
+        <span 
+class="rm-lmss-10">lists</span></li></ul>
+    </li>
+    <li class="itemize">Nesting transformers can create difficulties 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">For</span>
+        <span 
+class="rm-lmss-10">example,</span>
+        <span 
+class="rm-lmss-10">nested</span>
+        <span 
+class="rm-lmss-10">monad</span>
+        <span 
+class="rm-lmss-10">transformer</span>
+        <span 
+class="rm-lmss-10">problem</span>
+        <span 
+class="rm-lmss-10">in</span>
+        <span 
+class="rm-lmss-10">Haskell</span></li></ul>
+    </li></ul>                                                      
+<a 
+ id="Navigation33"></a><a 
+ id="page.33"></a>                                                           
+                                                           
+<a 
+ id="Navigation34"></a><a 
+ id="page.34"></a>                                                           
+<!--l. 295--><p class="noindent" >
+  <!--l. 295--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Combinator</span>
+  <span 
+class="rm-lmss-12x-x-120">classes</span>                                                            
+<!--l. 295--><p class="noindent" >A methods of combining other methods within a given context
+<!--tex4ht:inline--><div class="tabular"> <table id="TBL-3" class="tabular" 
+cellspacing="0" cellpadding="0"  
+><colgroup id="TBL-3-1g"><col 
+id="TBL-3-1"><col 
+id="TBL-3-2"></colgroup><tr  
+ style="vertical-align:baseline;" id="TBL-3-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-1-1"  
+class="td11">Class                                         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-1-2"  
+class="td11">Use when you know:                                </td>
+<td  id="TBL-3-1-3"  
+class="td10">Use it to:                                     </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-2-1"  
+class="td11">Applicative</td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-2-2"  
+class="td11">How to apply functions inside it                  </td>
+<td  id="TBL-3-2-3"  
+class="td10">Generalize &#8216;fmap&#8217; to n-ary functions   </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-3-1"  
+class="td11">Bifunctor                                     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-3-2"  
+class="td11">How to apply a function to two different parts</td>
+<td  id="TBL-3-3-3"  
+class="td10">Map more complex types generically   </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-4-1"  
+class="td11">Monads                                       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-4-2"  
+class="td11">How to compose functions that return it       </td>
+<td  id="TBL-3-4-3"  
+class="td10">Sequence operations you can&#8217;t unwrap</td></tr></table>
+</div> Limits: 
+    <ul class="itemize1">
+    <li class="itemize">
+    Nesting
+    different
+    types
+    of
+    composition
+    can
+    reduce
+    benefits
+    (for
+    example,
+    StateT
+    (MaybeT
+    IO))</li></ul>                                                   
+<a 
+ id="Navigation35"></a><a 
+ id="page.35"></a>                                                           
+                                                           
+<a 
+ id="Navigation36"></a><a 
+ id="page.36"></a>                                                           
+<!--l. 313--><p class="noindent" >
+  <!--l. 313--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">General</span>
+  <span 
+class="rm-lmss-12x-x-120">limits</span>                                                              
+    <ul class="itemize1">
+    <li class="itemize">It&#8217;s easy to use abstractions to avoid solving anything 
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">&#8220;Lenses</span>
+        <span 
+class="rm-lmss-10">solve</span>
+        <span 
+class="rm-lmss-10">many</span>
+        <span 
+class="rm-lmss-10">problems,</span>
+        <span 
+class="rm-lmss-10">including</span>
+        <span 
+class="rm-lmss-10">ones</span>
+        <span 
+class="rm-lmss-10">you</span>
+        <span 
+class="rm-lmss-10">didn&#8217;t</span>
+        <span 
+class="rm-lmss-10">have</span>
+        <span 
+class="rm-lmss-10">until</span>
+        <span 
+class="rm-lmss-10">you</span>
+        <span 
+class="rm-lmss-10">started</span>
+        <span 
+class="rm-lmss-10">using</span>
+        <span 
+class="rm-lmss-10">lenses&#8221;</span></li></ul>
+    </li>
+    <li class="itemize">If rules are not established, followed, and tested, you get
+    things like an overloaded , operator that prints things in
+    C++
+    </li>
+    <li class="itemize">&#8220;No free lunch&#8221; means that more advanced abstractions are harder
+    to use
+    </li>
+    <li class="itemize">Abstractions that make one part of a program easier to reason
+    about often make another part much harder to understand
+    
+        <ul class="itemize2">
+        <li class="itemize">
+        <span 
+class="rm-lmss-10">This</span>
+        <span 
+class="rm-lmss-10">is</span>
+        <span 
+class="rm-lmss-10">seen</span>
+        <span 
+class="rm-lmss-10">all</span>
+        <span 
+class="rm-lmss-10">over</span>
+        <span 
+class="rm-lmss-10">the</span>
+        <span 
+class="rm-lmss-10">place</span>
+        <span 
+class="rm-lmss-10">in</span>
+        <span 
+class="rm-lmss-10">Haskell</span>
+        <span 
+class="rm-lmss-10">with</span>
+        <span 
+class="rm-lmss-10">predicting</span>
+        <span 
+class="rm-lmss-10">performance</span></li></ul>
+    </li>
+    <li class="itemize">Overabstracting can reduce clarity when applied to simple
+    problems</li></ul>                                               
+<a 
+ id="Navigation37"></a><a 
+ id="page.37"></a>                                                           
+                                                           
+<a 
+ id="Navigation38"></a><a 
+ id="page.38"></a>                                                           
+<!--l. 347--><p class="noindent" >
+  <!--l. 347--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Example</span>
+  <span 
+class="rm-lmss-12x-x-120">of</span>
+  <span 
+class="rm-lmss-12x-x-120">overabstraction</span>                                                   
+<!--l. 347--><p class="noindent" >Junior Haskell Programmer:
+                                                           
+<a 
+ id="Navigation39"></a><a 
+ id="page.39"></a>                                                           
+                                                           
+<a 
+ id="Navigation40"></a><a 
+ id="page.40"></a>                                                           
+<!--l. 354--><p class="noindent" >
+  <!--l. 354--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Applying</span>
+  <span 
+class="rm-lmss-12x-x-120">abstractions</span>
+  <span 
+class="rm-lmss-12x-x-120">to</span>
+<span 
+class="rm-lmss-12x-x-120">parsing</span>                                                            
+<!--l. 354--><p class="noindent" >Here, I will use making a monadic parser in Haskell to show example
+problems and solutions through abstraction.
+                                                           
+<a 
+ id="Navigation41"></a><a 
+ id="page.41"></a>                                                           
+                                                           
+<a 
+ id="Navigation42"></a><a 
+ id="page.42"></a>                                                           
+<!--l. 365--><p class="noindent" >
+  <!--l. 365--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Parsing</span>
+  <span 
+class="rm-lmss-12x-x-120">Features</span>                                                          
+<!--l. 365--><p class="noindent" >What are some things we want to cover with our parser? 
+    <ul class="itemize1">
+    <li class="itemize">
+    We
+    want
+    to
+    be
+    able
+    to
+    parse
+    small
+    pieces
+    with
+    descriptions
+    </li>
+    <li class="itemize">
+    We
+    want
+    to
+    be
+    able
+    to
+    combine
+    small
+    parsers
+    into
+    larger
+    parsers
+    </li>
+    <li class="itemize">
+    If
+    a
+    parser
+    fails,
+    we
+    should
+    be
+    able
+    to
+    try
+    something
+    else</li></ul>                                                   
+<a 
+ id="Navigation43"></a><a 
+ id="page.43"></a>                                                           
+                                                           
+<a 
+ id="Navigation44"></a><a 
+ id="page.44"></a>                                                           
+<!--l. 373--><p class="noindent" >
+  <!--l. 373--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Parser</span>
+  <span 
+class="rm-lmss-12x-x-120">type</span>                                                               
+<!--l. 373--><p class="noindent" >newtype Parse object = Parser <span 
+class="cmsy-10x-x-109">{ </span>runParser :: String -¿Either String
+(String, object) <span 
+class="cmsy-10x-x-109">}</span>
+                                                           
+<a 
+ id="Navigation45"></a><a 
+ id="page.45"></a>                                                           
+                                                           
+<a 
+ id="Navigation46"></a><a 
+ id="page.46"></a>                                                           
+<!--l. 389--><p class="noindent" >
+  <!--l. 389--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Combinator</span>
+  <span 
+class="rm-lmss-12x-x-120">classes:</span>
+  <span 
+class="rm-lmss-12x-x-120">Functor</span>                                                           
+<!--l. 389--><p class="noindent" >class Functor f where fmap :: (a -¿ b) -¿ f a -¿ f b
+<!--l. 389--><p class="noindent" >Given:
+<!--l. 389--><p class="noindent" >fmap id == id fmap (f . g) == fmap f . fmap g
+                                                           
+<a 
+ id="Navigation47"></a><a 
+ id="page.47"></a>                                                           
+                                                           
+<a 
+ id="Navigation48"></a><a 
+ id="page.48"></a>                                                           
+<!--l. 418--><p class="noindent" >
+  <!--l. 418--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Functor</span>
+  <span 
+class="rm-lmss-12x-x-120">example</span>                                                           
+<!--l. 418--><p class="noindent" >Given a function <span 
+class="rm-lmsso-10x-x-109">infuriateCoder </span>:: <span 
+class="rm-lmsso-10x-x-109">Coder </span><span 
+class="lmsy-10x-x-109">&#x2192; </span><span 
+class="rm-lmsso-10x-x-109">AngryCoder </span>then fmap
+infuriateCoder :: Either NonCoder Coder -¿ Either NonCoder
+AngryCoder &#8211; Only infuriate coders, we&#8217;d need another function for
+NonCoder&#8217;s
+<!--l. 418--><p class="noindent" >fmap infuriateCoder :: RoomFullOf Coder -¿ RoomFullOf AngryCoder &#8211;
+Infuriate every coder in the room, wouldn&#8217;t work if there were any
+NonCoder&#8217;s in the room
+<!--l. 418--><p class="noindent" >Given a <span 
+class="rm-lmsso-10x-x-109">RoomFullOf </span>(<span 
+class="rm-lmsso-10x-x-109">EitherNonCoderCoder</span>)
+<!--l. 418--><p class="noindent" >fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -¿
+RoomFullOf (Either NonCoder AngryCoder)
+                                                           
+<a 
+ id="Navigation49"></a><a 
+ id="page.49"></a>                                                           
+                                                           
+<a 
+ id="Navigation50"></a><a 
+ id="page.50"></a>                                                           
+<!--l. 430--><p class="noindent" >
+  <!--l. 430--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Functor</span>
+  <span 
+class="rm-lmss-12x-x-120">requirements</span>                                                     
+<!--l. 430--><p class="noindent" >fmap id == id &#8211; means that fmaping the identity to all the objects in <img 
+src="talk0x.png" alt="¨f  "  class="uml" >
+object<img 
+src="talk1x.png" alt="¨s  "  class="uml" >hould do nothing
+<!--l. 430--><p class="noindent" >fmap (f . g) = fmap f . fmap g &#8211; means that fmaping one function then
+another is the same as fmaping <img 
+src="talk2x.png" alt="¨
+b  "  class="uml" >oth at once
+                                                           
+<a 
+ id="Navigation51"></a><a 
+ id="page.51"></a>                                                           
+                                                           
+<a 
+ id="Navigation52"></a><a 
+ id="page.52"></a>                                                           
+<!--l. 451--><p class="noindent" >
+  <!--l. 451--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Another</span>
+  <span 
+class="rm-lmss-12x-x-120">Functor</span>
+  <span 
+class="rm-lmss-12x-x-120">example</span>                                                           
+<!--l. 451--><p class="noindent" >toJSON :: Account -¿ JSON Account parseAccount :: Parse Account
+parseAccountJSON :: Parse (JSON Account) parseAccountJSON =
+fmap toJSON parseAccount
+                                                           
+<a 
+ id="Navigation53"></a><a 
+ id="page.53"></a>                                                           
+                                                           
+<a 
+ id="Navigation54"></a><a 
+ id="page.54"></a>                                                           
+<!--l. 466--><p class="noindent" >
+  <!--l. 466--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Functor</span>
+  <span 
+class="rm-lmss-12x-x-120">instance</span>
+  <span 
+class="rm-lmss-12x-x-120">for</span>
+<span 
+class="rm-lmss-12x-x-120">Parse</span>                                                              
+<!--l. 466--><p class="noindent" >instance Functor Parse where fmap :: (a -¿ b) -¿ Parse a -¿ Parse b fmap
+f (Parser p) = Parser (fmap (fmap f) . p)
+                                                           
+<a 
+ id="Navigation55"></a><a 
+ id="page.55"></a>                                                           
+                                                           
+<a 
+ id="Navigation56"></a><a 
+ id="page.56"></a>                                                           
+<!--l. 484--><p class="noindent" >
+  <!--l. 484--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Applicative</span>
+  <span 
+class="rm-lmss-12x-x-120">class</span>                                                               
+<!--l. 484--><p class="noindent" >pure :: Applicative f =¿ a -¿ f a (¡*¿) Applicative f =¿ f (a -¿ b) -¿ f a -¿
+f b
+<!--l. 484--><p class="noindent" >f x1 -¿ f ¡$¿ x1 :: Applicative f =¿ ( a1 -¿ b) f a1 -¿ f b
+<!--l. 484--><p class="noindent" >f x1 x2 -¿ f ¡$¿ x1 ¡*¿ x2 :: Applicative f =¿ ( a2 -¿ a1 -¿ b) -¿ f a2 -¿ f
+a1 -¿ f b
+<!--l. 484--><p class="noindent" >f x1 x2 x3 -¿ f ¡$¿ x1 ¡*¿ x2 ¡*¿ x3 :: Applicative f =¿ ( a3 -¿ a2 -¿ a1 -¿
+b) -¿ f a3 -¿ f a2 -¿ f a1 -¿ f b
+<!--l. 484--><p class="noindent" >f x1 x2 x3 x4 -¿ f ¡$¿ x1 ¡*¿ x2 ¡*¿ x3 ¡*¿ x4 :: Applicative f =¿
+(a4 -¿ a3 -¿ a2 -¿ a1 -¿ b) -¿ f a4 -¿ f a3 -¿ f a2 -¿ f a1 -¿ f
+b
+                                                           
+<a 
+ id="Navigation57"></a><a 
+ id="page.57"></a>                                                           
+                                                           
+<a 
+ id="Navigation58"></a><a 
+ id="page.58"></a>                                                           
+<!--l. 494--><p class="noindent" >
+  <!--l. 494--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Applicative</span>
+  <span 
+class="rm-lmss-12x-x-120">examples</span>                                                          
+<!--l. 494--><p class="noindent" >(+) ¡$¿ parseInt ¡*¿ parseInt &#8211; parses two integers and returns their
+sum
+<!--l. 494--><p class="noindent" >(,) ¡$¿ parseA ¡*¿ parseB = parseAB &#8211; parses A and B, and returns
+them in a tuple
+                                                           
+<a 
+ id="Navigation59"></a><a 
+ id="page.59"></a>                                                           
+                                                           
+<a 
+ id="Navigation60"></a><a 
+ id="page.60"></a>                                                           
+<!--l. 518--><p class="noindent" >
+  <!--l. 518--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Applicative</span>
+  <span 
+class="rm-lmss-12x-x-120">instance</span>
+  <span 
+class="rm-lmss-12x-x-120">for</span>
+<span 
+class="rm-lmss-12x-x-120">Parse</span>                                                              
+<!--l. 518--><p class="noindent" >instance Applicative Parse where pure :: a -¿ Parse a pure = Parser .
+(Right .) . flip (,)
+<!--l. 518--><p class="noindent" >(¡*¿) :: Parse (a -¿ b) -¿ Parse a -¿ Parse b Parser f ¡*¿ Parser x =
+Parser $ combine . f where combine (Left s1 ) = Left s1 combine (Right
+(s2, f&#8217;)) = fmap (fmap f&#8217;) (x s2)
+                                                           
+<a 
+ id="Navigation61"></a><a 
+ id="page.61"></a>                                                           
+                                                           
+<a 
+ id="Navigation62"></a><a 
+ id="page.62"></a>                                                           
+<!--l. 554--><p class="noindent" >
+  <!--l. 554--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Monad</span>
+  <span 
+class="rm-lmss-12x-x-120">class</span>                                                               
+<!--l. 554--><p class="noindent" >The core function for Monads is the bind function @(&#x20A0;=)@. Here&#8217;s one
+way to understand it:
+<!--l. 554--><p class="noindent" >(&#x20A0;=) :: t a -¿ (a -¿ t b) -¿ t b passedTo :: a -¿ (a -¿ b) -¿ b x &#x00A0;f = f
+x
+                                                           
+<a 
+ id="Navigation63"></a><a 
+ id="page.63"></a>                                                           
+                                                           
+<a 
+ id="Navigation64"></a><a 
+ id="page.64"></a>                                                           
+<!--l. 575--><p class="noindent" >
+  <!--l. 575--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Monad</span>
+  <span 
+class="rm-lmss-12x-x-120">example</span>                                                           
+<!--l. 575--><p class="noindent" >(&#x20A0;=) :: Either Bird Dog -¿ (Dog -¿ Either Bird Dog) -¿ Either Bird
+Dog
+                                                           
+<a 
+ id="Navigation65"></a><a 
+ id="page.65"></a>                                                           
+                                                           
+<a 
+ id="Navigation66"></a><a 
+ id="page.66"></a>                                                           
+<!--l. 590--><p class="noindent" >
+  <!--l. 590--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Monad</span>
+  <span 
+class="rm-lmss-12x-x-120">instance</span>
+  <span 
+class="rm-lmss-12x-x-120">for</span>
+<span 
+class="rm-lmss-12x-x-120">Parse</span>                                                              
+<!--l. 590--><p class="noindent" >instance Monad Parse where return :: a -¿ Parse a return = pure
+<!--l. 590--><p class="noindent" >(&#x20A0;=) :: Parse a -¿ (a -¿ Parse b) -¿ Parse b Parser x &#x20A0;= f = Parser
+$
+<!--l. 590--><p class="noindent" >s -¿ x s &#x20A0;=
+<!--l. 590--><p class="noindent" >(s&#8217;, y) -¿ either (const $ Left s) Right (runParser (f y) s&#8217;)
+                                                           
+<a 
+ id="Navigation67"></a><a 
+ id="page.67"></a>                                                           
+                                                           
+<a 
+ id="Navigation68"></a><a 
+ id="page.68"></a>                                                           
+<!--l. 617--><p class="noindent" >
+  <!--l. 617--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Monad</span>
+  <span 
+class="rm-lmss-12x-x-120">instance</span>
+  <span 
+class="rm-lmss-12x-x-120">for</span>
+  <span 
+class="rm-lmss-12x-x-120">Parse</span>
+<span 
+class="rm-lmss-12x-x-120">Cont.</span>                                                              
+<!--l. 617--><p class="noindent" >For example:
+<!--l. 617--><p class="noindent" >Parser Password -¿ (Password -¿ Parser Secret) -¿ Parser Secret
+                                                           
+<a 
+ id="Navigation69"></a><a 
+ id="page.69"></a>                                                           
+                                                           
+<a 
+ id="Navigation70"></a><a 
+ id="page.70"></a>                                                           
+<!--l. 632--><p class="noindent" >
+  <!--l. 632--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Alternative</span>
+  <span 
+class="rm-lmss-12x-x-120">class</span>                                                               
+<!--l. 632--><p class="noindent" >empty :: Alternative f =¿ f a (¡&#8212;¿) :: Alternative f =¿ f a -¿ f a -¿ f
+a
+                                                           
+<a 
+ id="Navigation71"></a><a 
+ id="page.71"></a>                                                           
+                                                           
+<a 
+ id="Navigation72"></a><a 
+ id="page.72"></a>                                                           
+<!--l. 660--><p class="noindent" >
+  <!--l. 660--><p class="noindent" ><span 
+class="rm-lmss-12x-x-120">Alternative</span>
+  <span 
+class="rm-lmss-12x-x-120">instance</span>
+  <span 
+class="rm-lmss-12x-x-120">for</span>
+<span 
+class="rm-lmss-12x-x-120">Parse</span>                                                              
+<!--l. 660--><p class="noindent" >instance Alternative Parse where empty :: Parse a empty = Parser Left &#8211;
+A parser that consumes no input and always fails
+<!--l. 660--><p class="noindent" >(¡&#8212;¿) :: Parse a -¿ Parse a -¿ Parse a Parser x ¡&#8212;¿ Parser y = Parser $
+either y Right . x &#8211; If x returns (Right x&#8217;) then return (Right x&#8217;) else
+return y
+                                                           
+<a 
+ id="Navigation73"></a><a 
+ id="page.73"></a>                                                           
+                                                           
+<a 
+ id="Navigation74"></a><a 
+ id="page.74"></a>                                                           
+                                                           
+<a 
+ id="Navigation75"></a><a 
+ id="page.75"></a>                                                           
+ 
+</body></html> 
+
+                                                           
+<a 
+ id="Navigation76"></a><a 
+ id="page.76"></a>                                                           
+                                                           
+
+
