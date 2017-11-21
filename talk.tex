@@ -1,0 +1,951 @@
+\documentclass{beamer}
+
+\mode<presentation>{\usetheme{default}
+%
+%\usecolortheme{albatross}
+%
+\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{listings}
+
+
+\title{Context Switching and Abstractions}
+
+\author{Michael Klein}
+\date{\today}
+
+\begin{document}
+\lstset{language=Haskell}
+
+
+% \begin{frame}
+%   \titlepage
+% \end{frame}
+
+
+% \begin{frame}
+% \frametitle{Overview}
+% \tableofcontents
+% \end{frame}
+
+
+\begin{frame}
+\frametitle{Context Switching}
+  \begin{itemize}
+    \item Projects are composed of different contexts
+    \item For example, when working with a RESTful API, we have to switch between GET operations and processing the data
+    \item The expense in time and effort of switching contexts is called \textit{context switching overhead}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Question}
+  How do you manage the overhead of switching contexts?
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Debugging example}
+\begin{itemize}
+  \item UI crashes when a number beginning with $9$ is input
+  \item Look at text processing
+  \item Look at decimal parser
+  \item Finally look at \textit{decimalDigits} function:
+\end{itemize}
+% \begin{lstlisting}[frame=single]
+% decimalDigits x | x < 9     = [x]
+%                 | otherwise = digits (div x 10) ++ [mod x 10]
+% \end{lstlisting}
+\begin{itemize}
+  \item It should be $\leq 9$, not $< 9$, and it only gives the wrong result when the number begins with $9$.
+\end{itemize}
+\end{frame}
+
+
+% \begin{frame}
+% \frametitle{A viscereal example}
+%   \begin{itemize}
+%     \item Take your hand and tap something in front of you repeatedly.
+%     \item Lift your hand less than an inch each time. Try to go relatively fast and get the hang of it.
+%     \item Now, stop. Do it again, but lift your hand about 6 inches each time.
+%     \item Alright, got the hang of that? Now do short taps for a couple seconds and suddenly switch.
+%     \item You should feel your hand automatically going back to a short tap during the transition.
+%   \end{itemize}
+% \end{frame}
+
+
+\begin{frame}
+\frametitle{Psychology of Context Switching}
+\begin{itemize}
+  \item Studies, etc.
+  \item One theory calls this ``Task-set inertia''
+  \item Your task gains inertia as you continue and it takes less effort to continue, just like taking your foot off the gas doesn't stop the car.
+  \item Switching from one context to a radically different one (an 180 deg turn) requires that you make a full stop, reorient yourself, and fully accelerate. You lost the inertia that was carrying you forward, you expended effort to stop, and you expended effort to restart. Doing this often is exhausting and inefficient.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Sources of Overhead}
+\begin{itemize}
+  \item We have to store the state of what we're doing in short term memory
+  \item We may have to adapt our environment (Think switching IDEs or opening/closing tabs)
+  \item If we're multitasking *at all*, switching contexts has all the \textit{stop the world} problems of a poorly threaded stop-the-world garbage collector
+  \item We have to either fetch or recreate the state of the other context
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Car analogy}
+  \begin{itemize}
+    \item If you're not going very fast, it's a lot easier to turn
+    \begin{itemize}
+      \item Try tapping slower
+    \end{itemize}
+    \item If we're going fast, we can still turn slowly
+    \begin{itemize}
+      \item Try changing the tapping height more slowly
+    \end{itemize}
+    \item When going fast, the destination is reached more quickly but mistakes are amplified
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Back to code}
+  How do these things translate to working with codebases?
+  \begin{itemize}
+    \item If we work through things slowly, it's much easier to change contexts, but we get less done
+    \item If we dig into a part of the code, it's hard to extract ourselves, but it may be easier to drift to nearby sections
+    \item Keeping high and low level code in mind is hard
+  \end{itemize}
+  % On one hand, going fast makes it hard to turn, but going slow takes forever
+\end{frame}
+
+
+\begin{frame}
+\frametitle{How to manage this?}
+  \begin{enumerate}
+    \item Just don't switch contexts
+      \begin{itemize}
+        \item Only work within one model
+        \item Don't dig into details, or distribute tasks so each person stays within one general context
+      \end{itemize}
+    \item Minimize the overhead required to switch contexts
+      \begin{itemize}
+        \item Keep coding style consistent
+        \item Have an architecture that's easy to navigate
+        \item Increase rapport between sections
+      \end{itemize}
+  \end{enumerate}
+\end{frame}
+% A friend of mine that studies history uses models.
+%   When he has two disparate areas of history that he's trying to wrap together, he posits a model and filters out everything that doesn't fit that model.
+%   From there, he can evaluate what his filters have resulted in, but he's unlikely to find some relevant nugget outside of the model.
+%
+% A common twist, or possibly development, of this model-building approach is to begin with a model you're already familiar with.
+%   In this case, you may not evaluate the model after applying it.
+%   This was the general approach to Newtonian Physics before Einstein came along.
+%   Kune speaks of this sort of occurence in __his book__.
+%   This approach is widely used as it is not an individual's solution that supports the practice as much as the group's repeated use.
+%   This approach also allows rapport within a context.
+%   If we're all using the same model, we can share terminology and solutions.
+
+
+\begin{frame}
+\frametitle{Minimizing overhead}
+  We can minimize context switching overhead through good abstractions. \\
+  This allows us to
+  \begin{enumerate}
+    \item Magnify small actions in controlled ways
+    \item Utilize similar patterns across a diverse codebase
+  \end{enumerate}
+  % This makes it easier to reason about code, as well as simplifying transitions
+  % (Think of fmap: I don't know how to build a mapper for this, but I know I can map over it.)
+  % angle/arc diagram
+\end{frame}
+
+
+% ?????
+\begin{frame}
+\frametitle{What's the point of an abstraction?}
+  To factor out repeated patterns and operations. \\
+  The best abstractions: 1) make the code easier to understand, 2) make it shorter, 3) make it faster. \\
+  Anything that does the opposite is not a good abstraction. 
+\end{frame}
+% ?????
+
+
+\begin{frame}
+\frametitle{What makes a good abstraction?}
+What, in your opinion, makes a good abstraction? \\
+
+``All problems in computer science can be solved by another level of indirection, except for the problem of too many layers of indirection.'' – David J. Wheeler
+\end{frame}
+
+
+\begin{frame}
+\frametitle{What makes a good abstraction? Cont.}
+% "If you aren't going to need it, don't make it" somewhat applies
+% Remember "Fast/Good/Cheap" triangle
+
+% An abstract interface should not require any configuration to use.
+% If an abstract interface stands alone then it should have a minimum number of entry points necessary to provide its services to others. 
+
+  Abstractions deal with the problem of specificity: The more specific, the more useful in one case and useless in the general case. The less specific, the more useless in any specific case.
+
+  HAMMER SCREWDRIVER COMBO
+
+  ``The key to making programs fast is to make them do practically nothing.'' -- Mike Haertel, original author of GNU grep
+  % This also applies to abstractions: good abstractions must be simultaneously specific in how they apply and non-specific in what they apply to
+  % Think of `str' in Clojure or `show` in Haskell. The requirement is that you can convert something to a string,
+  % But that's the only requirement.
+  % Also, an abstraction should not hide a meaningful aspect, for example, `str' should not be implemented in such a way that it sets off a nuke.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{What makes a good abstraction? Cont.}
+  In my opinion, a good abstraction takes a common yet restrictive pattern that is not bound to a single domain and provides a common interface. \\
+
+  A lens example: `\textunderscore head' provides access to a large number of container types that have a first value. \\
+  % It lets you say ``I haven't really worked with this type before, but I know how to access its first element''.
+  % I can do ``X ^? _head '', where X can be a list, vector, map, etc.
+  % I can get, set, or modify this first value
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Types of abstractions}
+  I break abstractions into three types:
+  % There are other types of abstractions, but I won't be considering them here.
+  \begin{enumerate}
+    \item Generics: Methods that ``do the same thing'' in differing contexts
+    \item Transformers: Methods for transferring a method between contexts
+    \item Combinators: Methods of combining functions that behave a certain way
+  \end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Generic classes}
+  A function that does exactly the same thing in a number of contexts
+  \begin{tabular}{l l}
+    Class       & Use when you know:              & Use it to: \\
+    \hline
+    Show        & How to convert it to a String   & Show things \\
+    Semigroup   & How to combine it associatively & Simplify your style \\
+    Alternative & When it fails                   & Try, try again
+  \end{tabular}
+%
+  Limits:
+  \begin{itemize}
+    \item Instances must be defined for many types manually % i.e. boilerplate
+    \item You're trusting that it's implemented properly
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Transformer classes}
+  A method of transferring a method from one context to another
+  \begin{tabular}{l l}
+    Class   & Use when you know:                      & Use it to: \\
+    \hline
+    Functor & How to apply a function to it           & Map generically \\
+    folds   & How to reduce it with a binary function & Extend binary operations to more arguments \\
+    unfolds & How to extend it                        & Build recursively-defined data structures \\
+    % lifting & How to generalize some methods          & Nest wrappers more easily
+  \end{tabular}
+%
+  Limits:
+  \begin{itemize}
+    \item Builders may look radically different for different types
+      \begin{itemize}
+        \item For example, vectors vs. cons lists
+      \end{itemize}
+    \item Nesting transformers can create difficulties 
+      \begin{itemize}
+        \item For example, nested monad transformer problem in Haskell
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Combinator classes}
+  A methods of combining other methods within a given context
+  \begin{tabular}{l l}
+    Class       & Use when you know:                             & Use it to: \\
+    \hline
+    Applicative & How to apply functions inside it               & Generalize `fmap' to n-ary functions \\
+    Bifunctor   & How to apply a function to two different parts & Map more complex types generically \\
+    Monads      & How to compose functions that return it        & Sequence operations you can't unwrap
+  \end{tabular}
+%
+  Limits:
+  \begin{itemize}
+    \item Nesting different types of composition can reduce benefits (for example, StateT (MaybeT IO))
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{General limits}
+  \begin{itemize}
+    \item It's easy to use abstractions to avoid solving anything 
+      \begin{itemize}
+        \item ``Lenses solve many problems, including ones you didn't have until you started using lenses''
+      \end{itemize}
+    \item If rules are not established, followed, and tested, you get things like an overloaded , operator that prints things in C++
+    \item ``No free lunch'' means that more advanced abstractions are harder to use
+    \item Abstractions that make one part of a program easier to reason about often make another part much harder to understand
+      \begin{itemize}
+        \item This is seen all over the place in Haskell with predicting performance
+      \end{itemize}
+    \item Overabstracting can reduce clarity when applied to simple problems 
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example of overabstraction}
+Junior Haskell Programmer:
+% \begin{lstlisting}[frame=single]
+% fac 0 = 1
+% fac n = n * fac (n-1)
+% \end{lstlisting}
+
+% Cartesianally-inclined Haskell programmer
+% \begin{lstlisting}[frame=single]
+% cata (n,c) []     = n
+% cata (n,c) (x:xs) = c (x, cata (n,c) xs)
+
+% pair (f,g) (x,y) = (f x, g y)
+
+% ana f = either (const []) (cons . pair (id, ana f)) . f
+
+% uncount 0 = Left  ()
+% uncount n = Right (n, n-1)
+
+% hylo f g = cata g . ana f
+
+% fac = hylo uncount (1, uncurry (*))
+% \end{lstlisting}
+
+% Tenured Haskell Programmer
+% \begin{lstlisting}[frame=single]
+% fac n = product [1..n]
+% \end{lstlisting}
+
+  % taken from http://www.willamette.edu/~fruehr/haskell/evolution.html
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Applying abstractions to parsing}
+  Here, I will use making a monadic parser in Haskell 
+  to show example problems and solutions through abstraction.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Parsing Features}
+  What are some things we want to cover with our parser?
+  \begin{itemize}
+    \item We want to be able to parse small pieces with descriptions
+    \item We want to be able to combine small parsers into larger parsers
+    \item If a parser fails, we should be able to try something else
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Parser type}
+  newtype Parse object = Parser \{ runParser :: String ->Either String (String, object) \}
+% In words, something that parses an object is a function that takes a String
+% and either fails (returns the input) or succeeds and returns the leftover String and the object.
+\end{frame}
+
+
+% instance IsString (Parse a) where
+%   fromString = error "The results of String parsers must not be used" <$> mapM char
+
+
+\begin{frame}
+\frametitle{Combinator classes: Functor}
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+
+  Given:
+
+ fmap id == id
+ fmap (f . g) == fmap f . fmap g
+\end{frame}
+
+
+% What does this mean? Well a Functor, given a type $f$, converts an $a \to b$ function into a $f a \to f b$ one.
+% A common example is the map function.
+%
+% That's basically what fmap does: If you have a way to get from $Type1$ to $Type2$ and a container is an instance of Functor,
+% you can get from that container of $Type1$'s to that container of $Type2$'s.
+%
+% So what are other "containers"? $(Either left)$ is a Functor, with
+% fmap :: (a -> b) -> Either left a -> Either left b
+
+
+\begin{frame}
+\frametitle{Functor example}
+Given a function $infuriateCoder :: Coder \to AngryCoder$ then
+ fmap infuriateCoder :: Either NonCoder Coder -> Either NonCoder AngryCoder
+ -- Only infuriate coders, we'd need another function for NonCoder's
+
+ fmap infuriateCoder :: RoomFullOf Coder -> RoomFullOf AngryCoder
+ -- Infuriate every coder in the room, wouldn't work if there were any NonCoder's in the room
+
+Given a $RoomFullOf (Either NonCoder Coder)$
+
+ fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -> RoomFullOf (Either NonCoder AngryCoder)
+
+% Whoh! What happened there? Well let's look at the type of fmap for @RoomFullOf a@:
+%  fmap :: (a -> b) -> RoomFullOf a -> RoomFullOf b
+% Ah, so since @fmap infuriateCoder@ works on @Either NonCoder Coder@, fmap can also apply it to everyone in the room.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Functor requirements}
+ fmap id == id
+ -- means that fmaping the identity to all the objects in \"f object\" should do nothing
+
+ fmap (f . g) = fmap f . fmap g
+ -- means that fmaping one function then another is the same as fmaping \"both at once\"
+
+% So Functor can be really useful, it allows us to get inside some type and modify what it contains.
+\end{frame}
+
+
+% Here's an example:
+%  translateJoke :: EnglishJoke -> GermanJoke
+%
+%  parseEnglishJoke :: Parse EnglishJoke
+%
+%  fmap translateJoke parseEnglishJoke :: Parse GermanJoke
+
+
+\begin{frame}
+\frametitle{Another Functor example}
+ toJSON :: Account -> JSON Account
+%
+ parseAccount :: Parse Account
+%
+ parseAccountJSON :: Parse (JSON Account)
+ parseAccountJSON = fmap toJSON parseAccount
+%
+% Now we can write @parseAccount@ without having to worry about JSON conversion and convert to JSON without worrying about parsing.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Functor instance for Parse}
+instance Functor Parse where
+  fmap :: (a -> b) -> Parse a -> Parse b
+  fmap f (Parser p) = Parser (fmap (fmap f) . p)
+%
+% To begin to make sense of this, here's what's going on:
+%  Parser (fmap (fmap f) . p) :: Parse b
+%          fmap (fmap f) . p  :: String -> Either String (String, b)
+%          fmap (fmap f)      :: Either String (String, a) -> Either String (String, b)
+%                fmap f       :: (String, a) -> (String, b)
+%                     f       :: a -> b
+\end{frame}
+
+
+% Now you might be thinking: \"ok, ok, but this isn't anything too crazy. I could do that manually without the Functor instance and still be O.K.\"
+% You're right, and I'm not going to pretend that you should use Haskell or monadic parsers just because you can map over different things.
+
+
+\begin{frame}
+\frametitle{Applicative class}
+pure :: Applicative f => a -> f a
+(<*>) Applicative f => f (a -> b) -> f a -> f b
+
+\\f x1          -> f <\$> x1                      :: Applicative f => (                  a1 -> b)                            f a1 -> f b
+\\f x1 x2       -> f <\$> x1 <*> x2               :: Applicative f => (            a2 -> a1 -> b)                 -> f a2 -> f a1 -> f b
+\\f x1 x2 x3    -> f <\$> x1 <*> x2 <*> x3        :: Applicative f => (      a3 -> a2 -> a1 -> b)         -> f a3 -> f a2 -> f a1 -> f b
+\\f x1 x2 x3 x4 -> f <\$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> a2 -> a1 -> b) -> f a4 -> f a3 -> f a2 -> f a1 -> f b
+
+% Do you see the pattern? Applicative allows arbitrary extension of Functor.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Applicative examples}
+(+) <\$> parseInt <*> parseInt
+-- parses two integers and returns their sum
+
+(,) <\$> parseA <*> parseB = parseAB
+-- parses A and B, and returns them in a tuple
+\end{frame}
+
+
+% If they have the above types and follow these rules, it's a valid instance
+% identity:     pure id <*> v = v
+%
+% homomorphism: pure f <*> pure x = pure (f x)
+%
+% composition:  pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
+%
+% interchange:  u <*> pure y = pure (\$ y) <*> u
+
+
+\begin{frame}
+\frametitle{Applicative instance for Parse}
+instance Applicative Parse where
+  pure :: a -> Parse a
+  pure = Parser . (Right .) . flip (,)
+
+  (<*>) :: Parse (a -> b) -> Parse a -> Parse b
+  Parser f <*> Parser x = Parser \$ combine . f
+    where
+      combine (Left   s1     ) = Left      s1
+      combine (Right (s2, f')) = fmap (fmap f') (x s2)
+\end{frame}
+
+
+% Well, to start, @pure x@ is a parser that consumes no input and always returns @x@.
+% A possibly easier to read definition is:
+%
+% pure x = Parser \$ \\s -> Right (s, x)
+%
+% How about @(<*>)@? Well, it does the following:
+% If the first parser passes, apply its result to the result of the second parser.
+%
+% That means that if either one fails, you will not get a result.
+% One bug I found made it so when looking up the word failed,
+% the parser forgot to let you know it wasn't able to use the given word.
+%
+% All the code for @(<*>)@ says is:
+%
+% Given @parser1@ that parses a function and @parser2@ that parses an input:
+%
+% if parser1 succeeds
+%   then run parser2 and if it succeeds
+%     then return parser1_result_function( parser2_result )
+%     else fail
+%   else fail
+
+
+\begin{frame}
+\frametitle{Monad class}
+The core function for Monads is the bind function @(>>=)@. Here's one way to understand it:
+
+(>>=)    :: t a -> (a -> t b) -> t b
+passedTo ::   a -> (a ->   b) ->   b
+x \passedTo\ f = f x
+
+% That is, bind is just @passedTo@ where the function result is somehow encapsulated.
+% You may not be able to break the encapsulation, but you can often still apply a function.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Monad example}
+(>>=) :: Either Bird Dog -> (Dog -> Either Bird Dog) -> Either Bird Dog
+
+% What happens if we have the following?
+%
+% (>>=) (Left someBird) :: (Dog -> Either Bird Dog) -> Either Bird Dog
+%
+% Well, there's no obvious way to convert a Bird into a Dog, so a reasonable default
+% is to skip the @Dog -> Either Bird Dog@ and return @Left someBird@.
+% In other words, there's likely no good function with the type @Either Bird Dog -> Dog@,
+% since we could have a Bird.
+%
+% Thus a sane implementation (actually the default definition for Haskell) for (>>=) on Either
+% is the following:
+%
+% (>>=) (Left  l) f = Left     x
+% (>>=) (Right r) f = Right (f x)
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Monad instance for Parse}
+% Luckily, this is almost all we need to make a Monad instance for Parse:
+
+instance Monad Parse where
+  return :: a -> Parse a
+  return = pure
+
+  (>>=) :: Parse a -> (a -> Parse b) -> Parse b
+  Parser x >>= f = Parser \$ \\s -> x s >>= \\(s', y) -> either (const \$ Left s) Right (runParser (f y) s')
+
+% This is very similar to (<*>).
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Monad instance for Parse Cont.}
+% What it does is runs @parser1@, then passes the result to the function to get a new parser.
+For example:
+
+Parser Password -> (Password -> Parser Secret) -> Parser Secret
+
+% The first parser reads the password and the second can read a secret
+%  if it has the password. These can be combined to make something that
+%  parses the password and the secret, returning the secret.
+%
+%  This again means that if either fails, you will not get the result.
+%
+% All the code says is:
+%
+% Given a parser and a function that can make a new parser out of its result:
+%
+% if the parser succeeds
+%   then
+%     make a new parser with its result and the function
+%     run the new parser
+%     return the result
+%   else
+%     fail
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Alternative class}
+% We have just one more class: Alternative.
+%
+% Alternative is much easier than the previous classes.
+% A type with an Alternative instance just needs to be able to pass and fail.
+%
+empty :: Alternative f => f a
+(<|>) :: Alternative f => f a -> f a -> f a
+%
+% empty is the value of type @f a@ that always fails. @(<|>)@ returns its
+% first argument if it passes, or its second if it fails.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Alternative instance for Parse}
+instance Alternative Parse where
+  empty :: Parse a
+  empty = Parser Left
+  -- A parser that consumes no input and always fails
+
+  (<|>) :: Parse a -> Parse a -> Parse a
+  Parser x <|> Parser y = Parser \$ either y Right . x
+  -- If x returns (Right x') then return (Right x') else return y
+
+% Here's an example application:
+%
+% parseFunctionName :: Parse (Name Function)
+% parseFunctionName = parseCamelCase <|> parse_snake_case
+
+
+% parse :: Parse a ->String ->Either String a
+% parse = fmap (fmap snd) . runParser
+%
+% All you do to run a parser is pull the function out of
+% the Parse type, run it on the string, and drop the leftovers.
+%
+% It would be nice to have it return an error, but it would get
+% more messy and this is supposed to be a pretty clean introduction.
+\end{frame}
+
+
+\end{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% % Ok, so we have a nice background on Functors, Applicatives, Monads, Applicatives, and how they apply to parsing.
+% % Now what? I'll begin by defining a single parser "by hand" (without all these nice classes) and show
+% % what can be done with it.
+
+
+% -- charP p = Parser go
+% --   where
+% --     go [] = Left []
+% --     go (c:cs) | p c       = Right (cs, c )
+% --               | otherwise = Left  (c : cs)
+% --
+% -- Accept any Char the predicate passes for.
+% --
+% -- Here's how this works: charP takes a test or \"predicate\".
+% -- When the parser is run, if the test passes for the first character in the string
+% -- then return the character and the rest of the string as leftover.
+% -- If the test fails or there is no first character, it fails.
+
+
+% char :: Char -> Parse Char
+% char = charP . (==)
+% %
+% % this is just
+% % charP (== givenCharacter)
+
+
+% digit :: Parse Char
+% digit = charP isDigit
+
+
+% string :: String -> Parse String
+% string = mapM char
+
+% % mapM maps the function and combines all the monadic values inside.
+% % Look at what happens when we just use map:
+% %
+% % map char ['a', 'b', 'c'] = [char 'a', char 'b', char 'c']
+% %
+% % This isn't too helpful since now we have to somehow run all the char
+% % parsers and collect the results. mapM does exactly this.
+
+
+% (<<) :: Monad m => m a -> m b -> m a
+% (<<) = liftM2 const
+
+% liftM2 f x y = f <\$> x <*> y
+% % One more function, this one is also free from return and (>>=):
+
+% parseA >> parseB
+% -- parses A then B, but tosses A
+
+% parseA << parseB
+% -- parses A then B, but tosses B
+
+% % This is like (>>), but backwards.
+% % liftM2 :: (a -> b -> c) -> Parser a -> Parser b -> Parser c
+% % liftM2 func parser1 parser2 = run parser1, run parser2, return their results combined with func
+% %
+% % So @liftM2 const@ runs both parsers, but @const a b = a@
+% % so it tosses the result of the second parser.
+
+% space :: Parse Char
+% space = charP isSpace
+
+% % Isn't this pretty?
+% inParens :: Parse a -> Parse a
+% inParens p = char '(' >> p << char ')'
+
+% -- |
+% -- @
+% -- word = some \$ charP isAlpha
+% -- @
+% --
+% word :: Parse String
+% word = some \$ charP isAlpha
+
+
+% -- Let's say we wanted to parse class instances of the form:
+% --
+% -- @
+% -- \"Class (Name Type)\"
+% -- @
+% --
+% -- Where \"Name\" is fixed. Then we only need the following two definitions.
+% --
+% -- Example use:
+% --
+% -- @
+% -- parse classType \"Spoken  (Name Kid)\"      == Right (\"Spoken\", \"Kid\")
+% -- parse classType \"Monad   (Name Function)\" == Right (\"Monad\",  \"Function\")
+% -- parse classType \"Word1   (Name Word2)\"    == Right (\"Word1\",  \"Word2\")
+% -- @
+
+
+% -- |
+% -- @
+% -- name = string \"Name " >> word
+% -- @
+% --
+% -- In words: the input must start with \"Name \", but once we know it's there, just toss it and parse a word.
+% name :: Parse String
+% name = string "Name " >> word
+
+% -- name' = "Name " >> word
+
+% -- |
+% -- @
+% -- classType = do
+% --   className <- word            -- get a word and call it 'className'
+% --   many space                   -- get a bunch of spaces, but toss them, they're in the way
+% --   typeName  <- inParens name   -- get a name that's in parentheses and call it 'typeName'
+% --   return (className, typeName) -- return what you've gotten in a nice tuple
+% -- @
+% --
+% classType :: Parse (String, String)
+% classType = do
+%   className <- word           -- get a word and call it 'className'
+%   many space                  -- get a bunch of spaces, but toss them, they're in the way
+%   typeName  <- inParens name  -- get a name that's in parentheses and call it 'typeName'
+%   return (className, typeName)     -- return what you've gotten in a nice tuple
+
+
+
+
+% -- Ok, so that wasn't bad. However, it's also not too hard to parse something like that in the first place.
+% -- How about parsing a lisp that only supports addition of natural numbers? Huh, that could be neat.
+% --
+% -- Here are some examples that our result should be able to evaluate:
+% --
+% -- @
+% -- 1                   -> 1
+% -- (+ 2 2)             -> 4
+% -- (+ (+ 1 2) (+ 3 4)) -> 10
+% -- @
+% --
+% -- For completion sake, we define: @(+ x) -> x@, and make @(+)@ or @()@ a parse error.
+% --
+% -- First, let's define our expression type (This is a GADT, but that's for another time. It could easily be defined as the following:
+% -- @data Expr a = Lit a | Sum [Expr a]@,
+% -- but I prefer the GADT style.)
+
+% -- |
+% -- @
+% -- data Expr a where
+% --   Lit ::       a  -> Expr a
+% --   Sum :: [Expr a] -> Expr a
+% -- @
+% data Expr a where
+%   Lit ::       a  -> Expr a
+%   Sum :: [Expr a] -> Expr a
+%   deriving (Show)
+
+% -- |
+% -- @
+% parseLit :: (Num a, Read a) => Parse (Expr a)
+% parseLit = do
+%   some space
+%   digits <- some digit
+%   return . Lit . read \$ digits
+
+
+% -- parseSum = do
+% --   char '('
+% --   char \'+\'
+% --   subExprs <- some (parseLit <|> parseSum)
+% --   char ')'
+% --   return \$ Sum subExprs
+% -- @
+% --
+% parseSum :: (Num a, Read a) => Parse (Expr a)
+
+% parseLit2 :: (Num a, Read a) => Parse (Expr a)
+% parseLit2 = fmap (Lit . read) \$ some space >> some digit
+
+% -- parseLit3 :: (Num a, Read a) => Parse (Expr a)
+% -- parseLit3 = fmap (Lit . read) \$ some " " >> some digit
+
+
+% parseSum2 :: (Num a, Read a) => Parse (Expr a)
+% parseSum2 = fmap Sum \$ string "(+" >> some (parseLit <|> parseSum) << char ')'
+
+% parseSum3 :: (Num a, Read a) => Parse (Expr a)
+% parseSum3 = fmap Sum . inParens \$ char '+' >> some (parseLit <|> parseSum)
+
+
+% -- Even though I don't consider it best practice and it's probably optimized away anyway by Haskell's laziness,
+% -- you can do the following to evaluate as you parse:
+% parseLit' :: (Num a, Read a) => Parse a
+% parseLit' = many space >> fmap read (some digit)
+
+% parseSum' :: (Num a, Read a) => Parse a
+% parseSum' = do
+%   many space
+%   string "(+"
+%   subExprs <- some (parseLit' <|> parseSum')
+%   char ')'
+%   return . sum \$ subExprs
+
+% -- parseSum4 :: (Num a, Read a) => Parse (Expr a)
+% -- parseSum4 = fmap Sum \$ "(+" >> some (parseLit <|> parseSum) << ")"
+
+% -- parseSum5 :: (Num a, Read a) => Parse (Expr a)
+% -- parseSum5 = do
+% --   _ <- "(+"
+% --   subExprs <- some (parseLit <|> parseSum)
+% --   _ <- ")"
+% --   return \$ Sum subExprs
+
+% -- |
+% -- @
+% -- parseExpr = parseLit <|> parseSum
+% -- @
+% parseExpr :: (Num a, Read a) => Parse (Expr a)
+% parseExpr = parseLit <|> parseSum
+
+% -- Well, that was easy. Lets make a quick evaluator:
+
+% -- |
+% -- @
+% -- eval (Lit x ) = x
+% -- eval (Sum xs) = sum (map eval xs)
+% -- @
+% --
+% eval :: (Num a, Read a) => Expr a -> a
+% eval (Lit x ) = x
+% eval (Sum xs) = sum (map eval xs)
+
+% -- |
+% -- @
+% -- evalString = parse \$ fmap eval parseExpr
+% -- @
+% --
+% -- Ok, so that was easy too and it even works with numbers as big as your computer can handle. I'm gonna go off and extend this until it gets hard.
+% --
+% evalString :: String -> Either String Integer
+% evalString = parse \$ fmap eval parseExpr
+
+
+% data Tree where
+%   Branch :: [Tree] -> Tree
+%   Leaf   :: Tree
+
+
+% parseLeaf = string "()" >> return Leaf
+
+% parseBranch = do
+%   char '('
+%   subTrees <- some parseTree
+%   char ')'
+%   return . Branch \$ subTrees
+
+% parseTree' = Branch <\$> inParens (some \$ parseLeaf <|> parseTree')
+
+% parseTree = Branch <\$> some (parseLeaf <|> parseBranch)
+
+% data Parens = Parens [Parens] deriving (Eq, Ord, Show)
+
+% parseParens :: Parse Parens
+% parseParens = Parens <\$> inParens (many parseParens)
+
+
+
+
+
+
+
+
