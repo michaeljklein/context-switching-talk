@@ -242,6 +242,7 @@
 \begin{frame}
 \frametitle{Generic classes}
   A function that does exactly the same thing in a number of contexts
+
   \begin{tabular}{l l}
     Class       & Use when you know:              & Use it to: \\
     \hline
@@ -249,18 +250,22 @@
     Semigroup   & How to combine it associatively & Simplify your style \\
     Alternative & When it fails                   & Try, try again
   \end{tabular}
-%
+
   Limits:
   \begin{itemize}
     \item Instances must be defined for many types manually % i.e. boilerplate
     \item You're trusting that it's implemented properly
   \end{itemize}
+
 \end{frame}
 
 
 \begin{frame}
+
 \frametitle{Transformer classes}
+
   A method of transferring a method from one context to another
+
   \begin{tabular}{l l}
     Class   & Use when you know:                      & Use it to: \\
     \hline
@@ -323,6 +328,7 @@
 \begin{frame}
 \frametitle{Example of overabstraction}
 Junior Haskell Programmer:
+
 % \begin{lstlisting}[frame=single]
 % fac 0 = 1
 % fac n = n * fac (n-1)
@@ -350,7 +356,8 @@ Junior Haskell Programmer:
 % fac n = product [1..n]
 % \end{lstlisting}
 
-  % taken from http://www.willamette.edu/~fruehr/haskell/evolution.html
+% taken from http://www.willamette.edu/~fruehr/haskell/evolution.html
+
 \end{frame}
 
 
@@ -375,8 +382,9 @@ Junior Haskell Programmer:
 \begin{frame}
 \frametitle{Parser type}
   newtype Parse object = Parser \{ runParser :: String ->Either String (String, object) \}
-% In words, something that parses an object is a function that takes a String
-% and either fails (returns the input) or succeeds and returns the leftover String and the object.
+
+  % In words, something that parses an object is a function that takes a String
+  % and either fails (returns the input) or succeeds and returns the leftover String and the object.
 \end{frame}
 
 
@@ -549,16 +557,22 @@ instance Applicative Parse where
 
 
 \begin{frame}
+
 \frametitle{Monad class}
 The core function for Monads is the bind function @(>>=)@. Here's one way to understand it:
 
+\begin{lstlisting}
 (>>=)    :: t a -> (a -> t b) -> t b
 passedTo ::   a -> (a ->   b) ->   b
-x \passedTo\ f = f x
+x \`passedTo\` f = f x
+\end{lstlisting}
+
 
 % That is, bind is just @passedTo@ where the function result is somehow encapsulated.
 % You may not be able to break the encapsulation, but you can often still apply a function.
+
 \end{frame}
+
 
 
 \begin{frame}
@@ -586,12 +600,15 @@ x \passedTo\ f = f x
 \frametitle{Monad instance for Parse}
 % Luckily, this is almost all we need to make a Monad instance for Parse:
 
+
+\begin{lstlisting}[frame=single]
 instance Monad Parse where
   return :: a -> Parse a
   return = pure
 
   (>>=) :: Parse a -> (a -> Parse b) -> Parse b
   Parser x >>= f = Parser \$ \\s -> x s >>= \\(s', y) -> either (const \$ Left s) Right (runParser (f y) s')
+\end{lstlisting}
 
 % This is very similar to (<*>).
 \end{frame}
@@ -602,7 +619,9 @@ instance Monad Parse where
 % What it does is runs @parser1@, then passes the result to the function to get a new parser.
 For example:
 
+\begin{lstlisting}[frame=single]
 Parser Password -> (Password -> Parser Secret) -> Parser Secret
+\end{lstlisting}
 
 % The first parser reads the password and the second can read a secret
 %  if it has the password. These can be combined to make something that
@@ -631,8 +650,13 @@ Parser Password -> (Password -> Parser Secret) -> Parser Secret
 % Alternative is much easier than the previous classes.
 % A type with an Alternative instance just needs to be able to pass and fail.
 %
+
+\begin{lstlisting}[frame=single]
 empty :: Alternative f => f a
 (<|>) :: Alternative f => f a -> f a -> f a
+\end{lstlisting}
+
+
 %
 % empty is the value of type @f a@ that always fails. @(<|>)@ returns its
 % first argument if it passes, or its second if it fails.
@@ -640,7 +664,10 @@ empty :: Alternative f => f a
 
 
 \begin{frame}
+
 \frametitle{Alternative instance for Parse}
+
+\begin{lstlisting}[frame=single]
 instance Alternative Parse where
   empty :: Parse a
   empty = Parser Left
@@ -649,12 +676,12 @@ instance Alternative Parse where
   (<|>) :: Parse a -> Parse a -> Parse a
   Parser x <|> Parser y = Parser \$ either y Right . x
   -- If x returns (Right x') then return (Right x') else return y
+\end{lstlisting}
 
 % Here's an example application:
 %
 % parseFunctionName :: Parse (Name Function)
 % parseFunctionName = parseCamelCase <|> parse_snake_case
-
 
 % parse :: Parse a ->String ->Either String a
 % parse = fmap (fmap snd) . runParser
@@ -664,6 +691,7 @@ instance Alternative Parse where
 %
 % It would be nice to have it return an error, but it would get
 % more messy and this is supposed to be a pretty clean introduction.
+
 \end{frame}
 
 
