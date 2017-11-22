@@ -1,19 +1,24 @@
 \documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 
 \mode<presentation>{\usetheme{default}
 % \usecolortheme{albatross}
 % \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
-\usepackage{lmodern}
+% \usepackage{lmodern}
 % \usepackage{graphicx}
 \usepackage{listings}
+
+\usepackage{minted}
 
 
 \title{Context Switching and Abstractions}
 
 \author{Michael Klein}
 \date{\today}
+
 
 \begin{document}
 
@@ -333,13 +338,13 @@
 
   Junior Haskell Programmer:
 
-  % \begin{lstlisting}[frame=single]
-  % fac 0 = 1
-  % fac n = n * fac (n-1)
-  % \end{lstlisting}
+  \begin{minted}
+  fac 0 = 1
+  fac n = n * fac (n-1)
+  \end{minted}
 
   % Cartesianally-inclined Haskell programmer
-  % \begin{lstlisting}[frame=single]
+  % \begin{minted}[frame=single]
   % cata (n,c) []     = n
   % cata (n,c) (x:xs) = c (x, cata (n,c) xs)
 
@@ -353,12 +358,12 @@
   % hylo f g = cata g . ana f
 
   % fac = hylo uncount (1, uncurry (*))
-  % \end{lstlisting}
+  % \end{minted}
 
   % Tenured Haskell Programmer
-  % \begin{lstlisting}[frame=single]
+  % \begin{minted}[frame=single]
   % fac n = product [1..n]
-  % \end{lstlisting}
+  % \end{minted}
 
   % taken from http://www.willamette.edu/~fruehr/haskell/evolution.html
 \end{frame}
@@ -388,30 +393,31 @@
 \begin{frame}
   \frametitle{Parser type}
 
-%   \begin{lstlisting}
-%     newtype Parse object = Parser { runParser :: String ->Either String (String, object) }
-%   \end{lstlisting}
+  \begin{minted}{haskell}
+    newtype Parse object = Parser { runParser :: String ->Either String (String, object) }
+  \end{minted}{haskell}
 
   % In words, something that parses an object is a function that takes a String
   % and either fails (returns the input) or succeeds and returns the leftover String and the object.
   %
   % instance IsString (Parse a) where
   %   fromString = error "The results of String parsers must not be used" <$> mapM char
+
 \end{frame}
 
 
 \begin{frame}
   \frametitle{Combinator classes: Functor}
 
-%   \begin{lstlisting}
-%   class Functor f where
-%     fmap :: (a -> b) -> f a -> f b
+  \begin{minted}
+    class Functor f where
+      fmap :: (a -> b) -> f a -> f b
 
-%     Given:
+    Given:
 
-%    fmap id == id
-%    fmap (f . g) == fmap f . fmap g
-%   \end{lstlisting}
+     fmap id == id
+     fmap (f . g) == fmap f . fmap g
+    \end{minted}
 
 \end{frame}
 
@@ -431,20 +437,20 @@
 
   Given a function $infuriateCoder :: Coder \to AngryCoder$ then:
 
-%   \begin{lstlisting}
-%    fmap infuriateCoder :: Either NonCoder Coder -> Either NonCoder AngryCoder
-%    -- Only infuriate coders, we'd need another function for NonCoder's
+  \begin{minted}
+    fmap infuriateCoder :: Either NonCoder Coder -> Either NonCoder AngryCoder
+    -- Only infuriate coders, we'd need another function for NonCoder's
 
-%    fmap infuriateCoder :: RoomFullOf Coder -> RoomFullOf AngryCoder
-%    -- Infuriate every coder in the room, wouldn't work if there were any NonCoder's in the room
-%   \end{lstlisting}
+    fmap infuriateCoder :: RoomFullOf Coder -> RoomFullOf AngryCoder
+    -- Infuriate every coder in the room, wouldn't work if there were any NonCoder's in the room
+  \end{minted}
 
 
   Given a $RoomFullOf (Either NonCoder Coder)$
 
-%     \begin{lstlisting}
-%       fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -> RoomFullOf (Either NonCoder AngryCoder)
-%     \end{lstlisting}
+  \begin{minted}
+    fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -> RoomFullOf (Either NonCoder AngryCoder)
+  \end{minted}
 
   % Whoh! What happened there? Well let's look at the type of fmap for @RoomFullOf a@:
   %  fmap :: (a -> b) -> RoomFullOf a -> RoomFullOf b
@@ -455,13 +461,13 @@
 \begin{frame}
   \frametitle{Functor requirements}
 
-%   \begin{lstlisting}
-%     fmap id == id
-%     -- means that fmaping the identity to all the objects in "f object" should do nothing
+  \begin{minted}
+    fmap id == id
+    -- means that fmaping the identity to all the objects in "f object" should do nothing
 
-%     fmap (f . g) = fmap f . fmap g
-%     -- means that fmaping one function then another is the same as fmaping "both at once"
-%   \end{lstlisting}
+    fmap (f . g) = fmap f . fmap g
+    -- means that fmaping one function then another is the same as fmaping "both at once"
+  \end{minted}
 
   % So Functor can be really useful, it allows us to get inside some type and modify what it contains.
   % Here's an example:
@@ -476,14 +482,14 @@
 \begin{frame}
   \frametitle{Another Functor example}
 
-%   \begin{lstlisting}
-%     toJSON :: Account -> JSON Account
+  \begin{minted}
+    toJSON :: Account -> JSON Account
 
-%     parseAccount :: Parse Account
+    parseAccount :: Parse Account
 
-%     parseAccountJSON :: Parse (JSON Account)
-%     parseAccountJSON = fmap toJSON parseAccount
-%   \end{lstlisting}
+    parseAccountJSON :: Parse (JSON Account)
+    parseAccountJSON = fmap toJSON parseAccount
+  \end{minted}
 
   % Now we can write @parseAccount@ without having to worry about JSON conversion and convert to JSON without worrying about parsing.
 \end{frame}
@@ -492,11 +498,11 @@
 \begin{frame}
   \frametitle{Functor instance for Parse}
 
-%   \begin{lstlisting}
-%   instance Functor Parse where
-%     fmap :: (a -> b) -> Parse a -> Parse b
-%     fmap f (Parser p) = Parser (fmap (fmap f) . p)
-%   \end{lstlisting}
+  \begin{minted}
+    instance Functor Parse where
+      fmap :: (a -> b) -> Parse a -> Parse b
+      fmap f (Parser p) = Parser (fmap (fmap f) . p)
+  \end{minted}
 
   % To begin to make sense of this, here's what's going on:
   %  Parser (fmap (fmap f) . p) :: Parse b
@@ -515,15 +521,15 @@
 \begin{frame}
   \frametitle{Applicative class}
 
-%   \begin{lstlisting}
-%   pure :: Applicative f => a -> f a
-%   (<*>) Applicative f => f (a -> b) -> f a -> f b
+  \begin{minted}
+    pure :: Applicative f => a -> f a
+    (<*>) Applicative f => f (a -> b) -> f a -> f b
 
-%   f x1          -> f <$> x1                      :: Applicative f => (                  a1 -> b)                            f a1 -> f b
-%   f x1 x2       -> f <$> x1 <*> x2               :: Applicative f => (            a2 -> a1 -> b)                 -> f a2 -> f a1 -> f b
-%   f x1 x2 x3    -> f <$> x1 <*> x2 <*> x3        :: Applicative f => (      a3 -> a2 -> a1 -> b)         -> f a3 -> f a2 -> f a1 -> f b
-%   f x1 x2 x3 x4 -> f <$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> a2 -> a1 -> b) -> f a4 -> f a3 -> f a2 -> f a1 -> f b
-%   \end{lstlisting}
+    f x1          -> f <$> x1                      :: Applicative f => (                  a1 -> b)                            f a1 -> f b
+    f x1 x2       -> f <$> x1 <*> x2               :: Applicative f => (            a2 -> a1 -> b)                 -> f a2 -> f a1 -> f b
+    f x1 x2 x3    -> f <$> x1 <*> x2 <*> x3        :: Applicative f => (      a3 -> a2 -> a1 -> b)         -> f a3 -> f a2 -> f a1 -> f b
+    f x1 x2 x3 x4 -> f <$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> a2 -> a1 -> b) -> f a4 -> f a3 -> f a2 -> f a1 -> f b
+  \end{minted}
 
   % Do you see the pattern? Applicative allows arbitrary extension of Functor.
 \end{frame}
@@ -532,13 +538,13 @@
 \begin{frame}
   \frametitle{Applicative examples}
 
-%   \begin{lstlisting}
-%   (+) <$> parseInt <*> parseInt
-%   -- parses two integers and returns their sum
+  \begin{minted}
+    (+) <$> parseInt <*> parseInt
+    -- parses two integers and returns their sum
 
-%   (,) <$> parseA <*> parseB = parseAB
-%   -- parses A and B, and returns them in a tuple
-%   \end{lstlisting}
+    (,) <$> parseA <*> parseB = parseAB
+    -- parses A and B, and returns them in a tuple
+  \end{minted}
 
 \end{frame}
 
@@ -556,17 +562,17 @@
 \begin{frame}
   \frametitle{Applicative instance for Parse}
 
-%   \begin{lstlisting}
-%   instance Applicative Parse where
-%     pure :: a -> Parse a
-%     pure = Parser . (Right .) . flip (,)
+  \begin{minted}
+    instance Applicative Parse where
+      pure :: a -> Parse a
+      pure = Parser . (Right .) . flip (,)
 
-%     (<*>) :: Parse (a -> b) -> Parse a -> Parse b
-%     Parser f <*> Parser x = Parser (combine . f)
-%       where
-%         combine (Left   s1     ) = Left      s1
-%         combine (Right (s2, f')) = fmap (fmap f') (x s2)
-%   \end{lstlisting}
+      (<*>) :: Parse (a -> b) -> Parse a -> Parse b
+      Parser f <*> Parser x = Parser (combine . f)
+        where
+          combine (Left   s1     ) = Left      s1
+          combine (Right (s2, f')) = fmap (fmap f') (x s2)
+  \end{minted}
 
 \end{frame}
 
@@ -598,13 +604,13 @@
 \begin{frame}
 
   \frametitle{Monad class}
-  The core function for Monads is the bind function @(>>=)@. Here's one way to understand it:
+  The core function for Monads is the bind function '\(> > =\)'. Here's one way to understand it:
 
-%   \begin{lstlisting}
-%     (>>=)    :: t a -> (a -> t b) -> t b
-%     passedTo ::   a -> (a ->   b) ->   b
-%     x `passedTo` f = f x
-%   \end{lstlisting}
+  \begin{minted}
+    (>>=)    :: t a -> (a -> t b) -> t b
+    passedTo ::   a -> (a ->   b) ->   b
+    x `passedTo` f = f x
+  \end{minted}
 
   % That is, bind is just @passedTo@ where the function result is somehow encapsulated.
   % You may not be able to break the encapsulation, but you can often still apply a function.
@@ -616,9 +622,9 @@
 \begin{frame}
   \frametitle{Monad example}
 
-%   \begin{lstlisting}[frame=single]
-%     (>>=) :: Either Bird Dog -> (Dog -> Either Bird Dog) -> Either Bird Dog
-%   \end{lstlisting}
+  \begin{minted}[frame=single]
+    (>>=) :: Either Bird Dog -> (Dog -> Either Bird Dog) -> Either Bird Dog
+  \end{minted}
 
   % What happens if we have the following?
   %
@@ -643,14 +649,14 @@
   % Luckily, this is almost all we need to make a Monad instance for Parse:
 
 
-%   \begin{lstlisting}[frame=single]
-%   instance Monad Parse where
-%     return :: a -> Parse a
-%     return = pure
+  \begin{minted}
+    instance Monad Parse where
+      return :: a -> Parse a
+      return = pure
 
-%     (>>=) :: Parse a -> (a -> Parse b) -> Parse b
-%     Parser x >>= f = Parser $ \s -> x s >>= \ (s', y) -> either (const $ Left s) Right (runParser (f y) s')
-%   \end{lstlisting}
+      (>>=) :: Parse a -> (a -> Parse b) -> Parse b
+      Parser x >>= f = Parser $ \s -> x s >>= \ (s', y) -> either (const $ Left s) Right (runParser (f y) s')
+  \end{minted}
 
   % This is very similar to (<*>).
 \end{frame}
@@ -662,9 +668,9 @@
 
   For example:
 
-%   \begin{lstlisting}[frame=single]
-%     Parser Password -> (Password -> Parser Secret) -> Parser Secret
-%   \end{lstlisting}
+  \begin{minted}
+    Parser Password -> (Password -> Parser Secret) -> Parser Secret
+  \end{minted}
 
   % The first parser reads the password and the second can read a secret
   %  if it has the password. These can be combined to make something that
@@ -694,10 +700,10 @@
   % Alternative is much easier than the previous classes.
   % A type with an Alternative instance just needs to be able to pass and fail.
 
-%   \begin{lstlisting}[frame=single]
-%     empty :: Alternative f => f a
-%     (<|>) :: Alternative f => f a -> f a -> f a
-%   \end{lstlisting}
+  \begin{minted}
+    empty :: Alternative f => f a
+    (<|>) :: Alternative f => f a -> f a -> f a
+  \end{minted}
 
   % empty is the value of type @f a@ that always fails. @(<|>)@ returns its
   % first argument if it passes, or its second if it fails.
@@ -707,16 +713,16 @@
 \begin{frame}
   \frametitle{Alternative instance for Parse}
 
-%   \begin{lstlisting}[frame=single]
-%   instance Alternative Parse where
-%     empty :: Parse a
-%     empty = Parser Left
-%     -- A parser that consumes no input and always fails
+  \begin{minted}
+    instance Alternative Parse where
+      empty :: Parse a
+      empty = Parser Left
+      -- A parser that consumes no input and always fails
 
-%     (<|>) :: Parse a -> Parse a -> Parse a
-%     Parser x <|> Parser y = Parser (either y Right . x)
-%     -- If x returns (Right x') then return (Right x') else return y
-%   \end{lstlisting}
+      (<|>) :: Parse a -> Parse a -> Parse a
+      Parser x <|> Parser y = Parser (either y Right . x)
+      -- If x returns (Right x') then return (Right x') else return y
+  \end{minted}
 
   % Here's an example application:
   %
@@ -736,10 +742,10 @@
 
 
 
-\begin{frame}
-  \frametitle{End}
-  %
-\end{frame}
+% \begin{frame}
+%   \frametitle{End}
+%   %
+% \end{frame}
 
 
 
