@@ -1,9 +1,9 @@
 \documentclass{beamer}
 
 \mode<presentation>{\usetheme{default}
-
+%
 %\usecolortheme{albatross}
-
+%
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
@@ -19,6 +19,7 @@
 
 \begin{document}
 \lstset{language=Haskell}
+
 
 \begin{frame}
 \frametitle{Context Switching}
@@ -46,11 +47,6 @@
   \item Look at decimal parser
   \item Finally look at \textit{decimalDigits} function:
 \end{itemize}
-
-% \begin{lstlisting}[frame=single]
-% decimalDigits x | x < 9     = [x]
-%                 | otherwise = digits (div x 10) ++ [mod x 10]
-% \end{lstlisting}
 
 \begin{itemize}
   \item It should be $\leq 9$, not $< 9$, and it only gives the wrong result when the number begins with $9$.
@@ -141,7 +137,6 @@
 % A friend of mine that studies history uses models.
 %   When he has two disparate areas of history that he's trying to wrap together, he posits a model and filters out everything that doesn't fit that model.
 %   From there, he can evaluate what his filters have resulted in, but he's unlikely to find some relevant nugget outside of the model.
-
 
 % A common twist, or possibly development, of this model-building approach is to begin with a model you're already familiar with.
 %   In this case, you may not evaluate the model after applying it.
@@ -279,7 +274,7 @@
   \begin{itemize}
     \item Builders may look radically different for different types
       \begin{itemize}
-        \item For example, vectors vs. cons lists
+        \item For example, vectors vs.\ cons lists
       \end{itemize}
     \item Nesting transformers can create difficulties 
       \begin{itemize}
@@ -381,7 +376,10 @@ Junior Haskell Programmer:
 
 \begin{frame}
 \frametitle{Parser type}
-  newtype Parse object = Parser \{ runParser :: String ->Either String (String, object) \}
+
+\begin{lstlisting}
+  newtype Parse object = Parser { runParser :: String ->Either String (String, object) }
+\end{lstlisting}
 
   % In words, something that parses an object is a function that takes a String
   % and either fails (returns the input) or succeeds and returns the leftover String and the object.
@@ -394,6 +392,8 @@ Junior Haskell Programmer:
 
 \begin{frame}
 \frametitle{Combinator classes: Functor}
+
+\begin{lstlisting}
 class Functor f where
   fmap :: (a -> b) -> f a -> f b
 
@@ -401,6 +401,8 @@ class Functor f where
 
  fmap id == id
  fmap (f . g) == fmap f . fmap g
+\end{lstlisting}
+
 \end{frame}
 
 
@@ -416,16 +418,22 @@ class Functor f where
 
 \begin{frame}
 \frametitle{Functor example}
+
+\begin{lstlisting}
 Given a function $infuriateCoder :: Coder \to AngryCoder$ then
  fmap infuriateCoder :: Either NonCoder Coder -> Either NonCoder AngryCoder
  -- Only infuriate coders, we'd need another function for NonCoder's
 
  fmap infuriateCoder :: RoomFullOf Coder -> RoomFullOf AngryCoder
  -- Infuriate every coder in the room, wouldn't work if there were any NonCoder's in the room
+\end{lstlisting}
+
 
 Given a $RoomFullOf (Either NonCoder Coder)$
 
+\begin{lstlisting}
  fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -> RoomFullOf (Either NonCoder AngryCoder)
+\end{lstlisting}
 
 % Whoh! What happened there? Well let's look at the type of fmap for @RoomFullOf a@:
 %  fmap :: (a -> b) -> RoomFullOf a -> RoomFullOf b
@@ -435,11 +443,14 @@ Given a $RoomFullOf (Either NonCoder Coder)$
 
 \begin{frame}
 \frametitle{Functor requirements}
+
+\begin{lstlisting}
  fmap id == id
  -- means that fmaping the identity to all the objects in \"f object\" should do nothing
 
  fmap (f . g) = fmap f . fmap g
  -- means that fmaping one function then another is the same as fmaping \"both at once\"
+\end{lstlisting}
 
 % So Functor can be really useful, it allows us to get inside some type and modify what it contains.
 \end{frame}
@@ -455,12 +466,16 @@ Given a $RoomFullOf (Either NonCoder Coder)$
 
 \begin{frame}
 \frametitle{Another Functor example}
+
+\begin{lstlisting}
  toJSON :: Account -> JSON Account
-%
+
  parseAccount :: Parse Account
-%
+
  parseAccountJSON :: Parse (JSON Account)
  parseAccountJSON = fmap toJSON parseAccount
+\end{lstlisting}
+
 %
 % Now we can write @parseAccount@ without having to worry about JSON conversion and convert to JSON without worrying about parsing.
 \end{frame}
@@ -468,9 +483,13 @@ Given a $RoomFullOf (Either NonCoder Coder)$
 
 \begin{frame}
 \frametitle{Functor instance for Parse}
+
+\begin{lstlisting}
 instance Functor Parse where
   fmap :: (a -> b) -> Parse a -> Parse b
   fmap f (Parser p) = Parser (fmap (fmap f) . p)
+\end{lstlisting}
+
 %
 % To begin to make sense of this, here's what's going on:
 %  Parser (fmap (fmap f) . p) :: Parse b
@@ -478,6 +497,7 @@ instance Functor Parse where
 %          fmap (fmap f)      :: Either String (String, a) -> Either String (String, b)
 %                fmap f       :: (String, a) -> (String, b)
 %                     f       :: a -> b
+
 \end{frame}
 
 
@@ -487,6 +507,8 @@ instance Functor Parse where
 
 \begin{frame}
 \frametitle{Applicative class}
+
+\begin{lstlisting}
 pure :: Applicative f => a -> f a
 (<*>) Applicative f => f (a -> b) -> f a -> f b
 
@@ -494,6 +516,7 @@ pure :: Applicative f => a -> f a
 \\f x1 x2       -> f <\$> x1 <*> x2               :: Applicative f => (            a2 -> a1 -> b)                 -> f a2 -> f a1 -> f b
 \\f x1 x2 x3    -> f <\$> x1 <*> x2 <*> x3        :: Applicative f => (      a3 -> a2 -> a1 -> b)         -> f a3 -> f a2 -> f a1 -> f b
 \\f x1 x2 x3 x4 -> f <\$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> a2 -> a1 -> b) -> f a4 -> f a3 -> f a2 -> f a1 -> f b
+\end{lstlisting}
 
 % Do you see the pattern? Applicative allows arbitrary extension of Functor.
 \end{frame}
@@ -501,11 +524,15 @@ pure :: Applicative f => a -> f a
 
 \begin{frame}
 \frametitle{Applicative examples}
+
+\begin{lstlisting}
 (+) <\$> parseInt <*> parseInt
 -- parses two integers and returns their sum
 
 (,) <\$> parseA <*> parseB = parseAB
 -- parses A and B, and returns them in a tuple
+\end{lstlisting}
+
 \end{frame}
 
 
@@ -521,6 +548,8 @@ pure :: Applicative f => a -> f a
 
 \begin{frame}
 \frametitle{Applicative instance for Parse}
+
+\begin{lstlisting}
 instance Applicative Parse where
   pure :: a -> Parse a
   pure = Parser . (Right .) . flip (,)
@@ -530,6 +559,8 @@ instance Applicative Parse where
     where
       combine (Left   s1     ) = Left      s1
       combine (Right (s2, f')) = fmap (fmap f') (x s2)
+\end{lstlisting}
+
 \end{frame}
 
 
@@ -556,6 +587,7 @@ instance Applicative Parse where
 %   else fail
 
 
+
 \begin{frame}
 
 \frametitle{Monad class}
@@ -577,7 +609,10 @@ x \`passedTo\` f = f x
 
 \begin{frame}
 \frametitle{Monad example}
+
+\begin{lstlisting}[frame=single]
 (>>=) :: Either Bird Dog -> (Dog -> Either Bird Dog) -> Either Bird Dog
+\end{lstlisting}
 
 % What happens if we have the following?
 %
@@ -593,6 +628,7 @@ x \`passedTo\` f = f x
 %
 % (>>=) (Left  l) f = Left     x
 % (>>=) (Right r) f = Right (f x)
+
 \end{frame}
 
 
