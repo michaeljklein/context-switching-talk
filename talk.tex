@@ -1,9 +1,9 @@
 \documentclass{beamer}
 
 \mode<presentation>{\usetheme{default}
-%
+
 %\usecolortheme{albatross}
-%
+
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
@@ -19,18 +19,6 @@
 
 \begin{document}
 \lstset{language=Haskell}
-
-
-% \begin{frame}
-%   \titlepage
-% \end{frame}
-
-
-% \begin{frame}
-% \frametitle{Overview}
-% \tableofcontents
-% \end{frame}
-
 
 \begin{frame}
 \frametitle{Context Switching}
@@ -49,20 +37,25 @@
 
 
 \begin{frame}
+
 \frametitle{Debugging example}
+
 \begin{itemize}
   \item UI crashes when a number beginning with $9$ is input
   \item Look at text processing
   \item Look at decimal parser
   \item Finally look at \textit{decimalDigits} function:
 \end{itemize}
+
 % \begin{lstlisting}[frame=single]
 % decimalDigits x | x < 9     = [x]
 %                 | otherwise = digits (div x 10) ++ [mod x 10]
 % \end{lstlisting}
+
 \begin{itemize}
   \item It should be $\leq 9$, not $< 9$, and it only gives the wrong result when the number begins with $9$.
 \end{itemize}
+
 \end{frame}
 
 
@@ -144,10 +137,12 @@
       \end{itemize}
   \end{enumerate}
 \end{frame}
+
 % A friend of mine that studies history uses models.
 %   When he has two disparate areas of history that he's trying to wrap together, he posits a model and filters out everything that doesn't fit that model.
 %   From there, he can evaluate what his filters have resulted in, but he's unlikely to find some relevant nugget outside of the model.
-%
+
+
 % A common twist, or possibly development, of this model-building approach is to begin with a model you're already familiar with.
 %   In this case, you may not evaluate the model after applying it.
 %   This was the general approach to Newtonian Physics before Einstein came along.
@@ -165,9 +160,11 @@
     \item Magnify small actions in controlled ways
     \item Utilize similar patterns across a diverse codebase
   \end{enumerate}
+
   % This makes it easier to reason about code, as well as simplifying transitions
   % (Think of fmap: I don't know how to build a mapper for this, but I know I can map over it.)
   % angle/arc diagram
+
 \end{frame}
 
 
@@ -183,25 +180,32 @@
 
 \begin{frame}
 \frametitle{What makes a good abstraction?}
-What, in your opinion, makes a good abstraction? \\
+  What, in your opinion, makes a good abstraction? \\
 
-``All problems in computer science can be solved by another level of indirection, except for the problem of too many layers of indirection.'' – David J. Wheeler
+  ``All problems in computer science can be solved by another level of indirection, except for the problem of too many layers of indirection.'' – David J. Wheeler
+
+  % Diomidis Spinellis. Another level of indirection.
+  % In Andy Oram and Greg Wilson, editors,
+  % Beautiful Code: Leading Programmers Explain How They Think,
+  % chapter 17, pages 279–291. O'Reilly and Associates, Sebastopol, CA, 2007.
 \end{frame}
 
 
 \begin{frame}
 \frametitle{What makes a good abstraction? Cont.}
-% "If you aren't going to need it, don't make it" somewhat applies
-% Remember "Fast/Good/Cheap" triangle
 
-% An abstract interface should not require any configuration to use.
-% If an abstract interface stands alone then it should have a minimum number of entry points necessary to provide its services to others. 
+  % "If you aren't going to need it, don't make it" somewhat applies
+  % Remember "Fast/Good/Cheap" triangle
+
+  % An abstract interface should not require any configuration to use.
+  % If an abstract interface stands alone then it should have a minimum number of entry points necessary to provide its services to others. 
 
   Abstractions deal with the problem of specificity: The more specific, the more useful in one case and useless in the general case. The less specific, the more useless in any specific case.
 
   HAMMER SCREWDRIVER COMBO
 
   ``The key to making programs fast is to make them do practically nothing.'' -- Mike Haertel, original author of GNU grep
+
   % This also applies to abstractions: good abstractions must be simultaneously specific in how they apply and non-specific in what they apply to
   % Think of `str' in Clojure or `show` in Haskell. The requirement is that you can convert something to a string,
   % But that's the only requirement.
@@ -214,6 +218,7 @@ What, in your opinion, makes a good abstraction? \\
   In my opinion, a good abstraction takes a common yet restrictive pattern that is not bound to a single domain and provides a common interface. \\
 
   A lens example: `\textunderscore head' provides access to a large number of container types that have a first value. \\
+
   % It lets you say ``I haven't really worked with this type before, but I know how to access its first element''.
   % I can do ``X ^? _head '', where X can be a list, vector, map, etc.
   % I can get, set, or modify this first value
@@ -224,11 +229,13 @@ What, in your opinion, makes a good abstraction? \\
 \frametitle{Types of abstractions}
   I break abstractions into three types:
   % There are other types of abstractions, but I won't be considering them here.
+
   \begin{enumerate}
     \item Generics: Methods that ``do the same thing'' in differing contexts
     \item Transformers: Methods for transferring a method between contexts
     \item Combinators: Methods of combining functions that behave a certain way
   \end{enumerate}
+
 \end{frame}
 
 
