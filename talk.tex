@@ -1,10 +1,8 @@
 \documentclass{beamer}
 
 \mode<presentation>{\usetheme{default}
-%
-%\usecolortheme{albatross}
-%
-\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+% \usecolortheme{albatross}
+% \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
 \usepackage{lmodern}
@@ -22,7 +20,7 @@
 
 
 \begin{frame}
-\frametitle{Context Switching}
+  \frametitle{Context Switching}
   \begin{itemize}
     \item Projects are composed of different contexts
     \item For example, when working with a RESTful API, we have to switch between GET operations and processing the data
@@ -32,25 +30,25 @@
 
 
 \begin{frame}
-\frametitle{Question}
+  \frametitle{Question}
+
   How do you manage the overhead of switching contexts?
 \end{frame}
 
 
 \begin{frame}
+  \frametitle{Debugging example}
 
-\frametitle{Debugging example}
+  \begin{itemize}
+    \item UI crashes when a number beginning with $9$ is input
+    \item Look at text processing
+    \item Look at decimal parser
+    \item Finally look at \textit{decimalDigits} function:
+  \end{itemize}
 
-\begin{itemize}
-  \item UI crashes when a number beginning with $9$ is input
-  \item Look at text processing
-  \item Look at decimal parser
-  \item Finally look at \textit{decimalDigits} function:
-\end{itemize}
-
-\begin{itemize}
-  \item It should be $\leq 9$, not $< 9$, and it only gives the wrong result when the number begins with $9$.
-\end{itemize}
+  \begin{itemize}
+    \item It should be $\leq 9$, not $< 9$, and it only gives the wrong result when the number begins with $9$.
+  \end{itemize}
 
 \end{frame}
 
@@ -68,30 +66,30 @@
 
 
 \begin{frame}
-\frametitle{Psychology of Context Switching}
-\begin{itemize}
-  \item Studies, etc.
-  \item One theory calls this ``Task-set inertia''
-  \item Your task gains inertia as you continue and it takes less effort to continue, just like taking your foot off the gas doesn't stop the car.
-  \item Switching from one context to a radically different one (an 180 deg turn) requires that you make a full stop, reorient yourself, and fully accelerate.
-    You lost the inertia that was carrying you forward, you expended effort to stop, and you expended effort to restart. Doing this often is exhausting and inefficient.
-\end{itemize}
+  \frametitle{Psychology of Context Switching}
+  \begin{itemize}
+    \item Studies, etc.
+    \item One theory calls this ``Task-set inertia''
+    \item Your task gains inertia as you continue and it takes less effort to continue, just like taking your foot off the gas doesn't stop the car.
+    \item Switching from one context to a radically different one (an 180 deg turn) requires that you make a full stop, reorient yourself, and fully accelerate.
+      You lost the inertia that was carrying you forward, you expended effort to stop, and you expended effort to restart. Doing this often is exhausting and inefficient.
+  \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Sources of Overhead}
-\begin{itemize}
-  \item We have to store the state of what we're doing in short term memory
-  \item We may have to adapt our environment (Think switching IDEs or opening/closing tabs)
-  \item If we're multitasking \textbf{at all}, switching contexts has all the \textit{stop the world} problems of a poorly threaded stop-the-world garbage collector
-  \item We have to either fetch or recreate the state of the other context
-\end{itemize}
+  \frametitle{Sources of Overhead}
+  \begin{itemize}
+    \item We have to store the state of what we're doing in short term memory
+    \item We may have to adapt our environment (Think switching IDEs or opening/closing tabs)
+    \item If we're multitasking \textbf{at all}, switching contexts has all the \textit{stop the world} problems of a poorly threaded stop-the-world garbage collector
+    \item We have to either fetch or recreate the state of the other context
+  \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Car analogy}
+  \frametitle{Car analogy}
   \begin{itemize}
     \item If you're not going very fast, it's a lot easier to turn
     \begin{itemize}
@@ -107,7 +105,8 @@
 
 
 \begin{frame}
-\frametitle{Back to code}
+  \frametitle{Back to code}
+
   How do these things translate to working with codebases?
   \begin{itemize}
     \item If we work through things slowly, it's much easier to change contexts, but we get less done
@@ -119,7 +118,7 @@
 
 
 \begin{frame}
-\frametitle{How to manage this?}
+  \frametitle{How to manage this?}
   \begin{enumerate}
     \item Just don't switch contexts
       \begin{itemize}
@@ -150,8 +149,10 @@
 
 
 \begin{frame}
-\frametitle{Minimizing overhead}
+  \frametitle{Minimizing overhead}
+
   We can minimize context switching overhead through good abstractions. \\
+
   This allows us to
   \begin{enumerate}
     \item Magnify small actions in controlled ways
@@ -176,7 +177,8 @@
 
 
 \begin{frame}
-\frametitle{What makes a good abstraction?}
+  \frametitle{What makes a good abstraction?}
+
   What, in your opinion, makes a good abstraction? \\
 
   ``All problems in computer science can be solved by another level of indirection, except for the problem of too many layers of indirection.'' – David J. Wheeler
@@ -189,7 +191,7 @@
 
 
 \begin{frame}
-\frametitle{What makes a good abstraction? Cont.}
+  \frametitle{What makes a good abstraction? Cont.}
 
   % "If you aren't going to need it, don't make it" somewhat applies
   % Remember "Fast/Good/Cheap" triangle
@@ -211,7 +213,8 @@
 
 
 \begin{frame}
-\frametitle{What makes a good abstraction? Cont.}
+  \frametitle{What makes a good abstraction? Cont.}
+
   In my opinion, a good abstraction takes a common yet restrictive pattern that is not bound to a single domain and provides a common interface. \\
 
   A lens example: `\textunderscore head' provides access to a large number of container types that have a first value. \\
@@ -223,7 +226,8 @@
 
 
 \begin{frame}
-\frametitle{Types of abstractions}
+  \frametitle{Types of abstractions}
+
   I break abstractions into three types:
   % There are other types of abstractions, but I won't be considering them here.
 
@@ -237,7 +241,8 @@
 
 
 \begin{frame}
-\frametitle{Generic classes}
+  \frametitle{Generic classes}
+
   A function that does exactly the same thing in a number of contexts
 
   \begin{tabular}{l l}
@@ -258,8 +263,7 @@
 
 
 \begin{frame}
-
-\frametitle{Transformer classes}
+  \frametitle{Transformer classes}
 
   A method of transferring a method from one context to another
 
@@ -287,7 +291,8 @@
 
 
 \begin{frame}
-\frametitle{Combinator classes}
+  \frametitle{Combinator classes}
+
   A methods of combining other methods within a given context
   \begin{tabular}{l l}
     Class       & Use when you know:                             & Use it to: \\
@@ -296,7 +301,7 @@
     Bifunctor   & How to apply a function to two different parts & Map more complex types generically \\
     Monads      & How to compose functions that return it        & Sequence operations you can't unwrap
   \end{tabular}
-%
+
   Limits:
   \begin{itemize}
     \item Nesting different types of composition can reduce benefits (for example, StateT (MaybeT IO))
@@ -305,7 +310,7 @@
 
 
 \begin{frame}
-\frametitle{General limits}
+  \frametitle{General limits}
   \begin{itemize}
     \item It's easy to use abstractions to avoid solving anything 
       \begin{itemize}
@@ -323,51 +328,52 @@
 
 
 \begin{frame}
-\frametitle{Example of overabstraction}
-Junior Haskell Programmer:
+  \frametitle{Example of overabstraction}
 
-% \begin{lstlisting}[frame=single]
-% fac 0 = 1
-% fac n = n * fac (n-1)
-% \end{lstlisting}
+  Junior Haskell Programmer:
 
-% Cartesianally-inclined Haskell programmer
-% \begin{lstlisting}[frame=single]
-% cata (n,c) []     = n
-% cata (n,c) (x:xs) = c (x, cata (n,c) xs)
+  % \begin{lstlisting}[frame=single]
+  % fac 0 = 1
+  % fac n = n * fac (n-1)
+  % \end{lstlisting}
 
-% pair (f,g) (x,y) = (f x, g y)
+  % Cartesianally-inclined Haskell programmer
+  % \begin{lstlisting}[frame=single]
+  % cata (n,c) []     = n
+  % cata (n,c) (x:xs) = c (x, cata (n,c) xs)
 
-% ana f = either (const []) (cons . pair (id, ana f)) . f
+  % pair (f,g) (x,y) = (f x, g y)
 
-% uncount 0 = Left  ()
-% uncount n = Right (n, n-1)
+  % ana f = either (const []) (cons . pair (id, ana f)) . f
 
-% hylo f g = cata g . ana f
+  % uncount 0 = Left  ()
+  % uncount n = Right (n, n-1)
 
-% fac = hylo uncount (1, uncurry (*))
-% \end{lstlisting}
+  % hylo f g = cata g . ana f
 
-% Tenured Haskell Programmer
-% \begin{lstlisting}[frame=single]
-% fac n = product [1..n]
-% \end{lstlisting}
+  % fac = hylo uncount (1, uncurry (*))
+  % \end{lstlisting}
 
-% taken from http://www.willamette.edu/~fruehr/haskell/evolution.html
+  % Tenured Haskell Programmer
+  % \begin{lstlisting}[frame=single]
+  % fac n = product [1..n]
+  % \end{lstlisting}
 
+  % taken from http://www.willamette.edu/~fruehr/haskell/evolution.html
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Applying abstractions to parsing}
+  \frametitle{Applying abstractions to parsing}
+
   Here, I will use making a monadic parser in Haskell 
   to show example problems and solutions through abstraction.
 \end{frame}
 
 
 \begin{frame}
+  \frametitle{Parsing Features}
 
-\frametitle{Parsing Features}
   What are some things we want to cover with our parser?
   \begin{itemize}
     \item We want to be able to parse small pieces with descriptions
@@ -379,7 +385,7 @@ Junior Haskell Programmer:
 
 
 \begin{frame}
-\frametitle{Parser type}
+  \frametitle{Parser type}
 
   \begin{lstlisting}
     newtype Parse object = Parser { runParser :: String ->Either String (String, object) }
@@ -393,21 +399,18 @@ Junior Haskell Programmer:
 \end{frame}
 
 
-
-
 \begin{frame}
-\frametitle{Combinator classes: Functor}
+  \frametitle{Combinator classes: Functor}
 
-\begin{lstlisting}
-class Functor f where
-  fmap :: (a -> b) -> f a -> f b
+  \begin{lstlisting}
+  class Functor f where
+    fmap :: (a -> b) -> f a -> f b
 
-  Given:
+    Given:
 
- fmap id == id
- fmap (f . g) == fmap f . fmap g
-\end{lstlisting}
-
+   fmap id == id
+   fmap (f . g) == fmap f . fmap g
+  \end{lstlisting}
 \end{frame}
 
 
@@ -422,81 +425,81 @@ class Functor f where
 
 
 \begin{frame}
-\frametitle{Functor example}
+  \frametitle{Functor example}
 
-Given a function $infuriateCoder :: Coder \to AngryCoder$ then:
-\begin{lstlisting}
- fmap infuriateCoder :: Either NonCoder Coder -> Either NonCoder AngryCoder
- -- Only infuriate coders, we'd need another function for NonCoder's
-
- fmap infuriateCoder :: RoomFullOf Coder -> RoomFullOf AngryCoder
- -- Infuriate every coder in the room, wouldn't work if there were any NonCoder's in the room
-\end{lstlisting}
-
-
-Given a $RoomFullOf (Either NonCoder Coder)$
+  Given a function $infuriateCoder :: Coder \to AngryCoder$ then:
   \begin{lstlisting}
-    fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -> RoomFullOf (Either NonCoder AngryCoder)
+   fmap infuriateCoder :: Either NonCoder Coder -> Either NonCoder AngryCoder
+   -- Only infuriate coders, we'd need another function for NonCoder's
+
+   fmap infuriateCoder :: RoomFullOf Coder -> RoomFullOf AngryCoder
+   -- Infuriate every coder in the room, wouldn't work if there were any NonCoder's in the room
   \end{lstlisting}
 
-% Whoh! What happened there? Well let's look at the type of fmap for @RoomFullOf a@:
-%  fmap :: (a -> b) -> RoomFullOf a -> RoomFullOf b
-% Ah, so since @fmap infuriateCoder@ works on @Either NonCoder Coder@, fmap can also apply it to everyone in the room.
+
+  Given a $RoomFullOf (Either NonCoder Coder)$
+    \begin{lstlisting}
+      fmap (fmap infuriateCoder) :: RoomFullOf (Either NonCoder Coder) -> RoomFullOf (Either NonCoder AngryCoder)
+    \end{lstlisting}
+
+  % Whoh! What happened there? Well let's look at the type of fmap for @RoomFullOf a@:
+  %  fmap :: (a -> b) -> RoomFullOf a -> RoomFullOf b
+  % Ah, so since @fmap infuriateCoder@ works on @Either NonCoder Coder@, fmap can also apply it to everyone in the room.
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Functor requirements}
+  \frametitle{Functor requirements}
 
-\begin{lstlisting}
-  fmap id == id
-  -- means that fmaping the identity to all the objects in "f object" should do nothing
+  \begin{lstlisting}
+    fmap id == id
+    -- means that fmaping the identity to all the objects in "f object" should do nothing
 
-  fmap (f . g) = fmap f . fmap g
-  -- means that fmaping one function then another is the same as fmaping "both at once"
-\end{lstlisting}
+    fmap (f . g) = fmap f . fmap g
+    -- means that fmaping one function then another is the same as fmaping "both at once"
+  \end{lstlisting}
 
-% So Functor can be really useful, it allows us to get inside some type and modify what it contains.
-% Here's an example:
-%  translateJoke :: EnglishJoke -> GermanJoke
-%
-%  parseEnglishJoke :: Parse EnglishJoke
-%
-%  fmap translateJoke parseEnglishJoke :: Parse GermanJoke
+  % So Functor can be really useful, it allows us to get inside some type and modify what it contains.
+  % Here's an example:
+  %  translateJoke :: EnglishJoke -> GermanJoke
+  %
+  %  parseEnglishJoke :: Parse EnglishJoke
+  %
+  %  fmap translateJoke parseEnglishJoke :: Parse GermanJoke
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Another Functor example}
+  \frametitle{Another Functor example}
 
-\begin{lstlisting}
-  toJSON :: Account -> JSON Account
+  \begin{lstlisting}
+    toJSON :: Account -> JSON Account
 
-  parseAccount :: Parse Account
+    parseAccount :: Parse Account
 
-  parseAccountJSON :: Parse (JSON Account)
-  parseAccountJSON = fmap toJSON parseAccount
-\end{lstlisting}
+    parseAccountJSON :: Parse (JSON Account)
+    parseAccountJSON = fmap toJSON parseAccount
+  \end{lstlisting}
 
-% Now we can write @parseAccount@ without having to worry about JSON conversion and convert to JSON without worrying about parsing.
+  % Now we can write @parseAccount@ without having to worry about JSON conversion and convert to JSON without worrying about parsing.
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Functor instance for Parse}
+  \frametitle{Functor instance for Parse}
 
-\begin{lstlisting}
-instance Functor Parse where
-  fmap :: (a -> b) -> Parse a -> Parse b
-  fmap f (Parser p) = Parser (fmap (fmap f) . p)
-\end{lstlisting}
+  \begin{lstlisting}
+  instance Functor Parse where
+    fmap :: (a -> b) -> Parse a -> Parse b
+    fmap f (Parser p) = Parser (fmap (fmap f) . p)
+  \end{lstlisting}
 
-% To begin to make sense of this, here's what's going on:
-%  Parser (fmap (fmap f) . p) :: Parse b
-%          fmap (fmap f) . p  :: String -> Either String (String, b)
-%          fmap (fmap f)      :: Either String (String, a) -> Either String (String, b)
-%                fmap f       :: (String, a) -> (String, b)
-%                     f       :: a -> b
+  % To begin to make sense of this, here's what's going on:
+  %  Parser (fmap (fmap f) . p) :: Parse b
+  %          fmap (fmap f) . p  :: String -> Either String (String, b)
+  %          fmap (fmap f)      :: Either String (String, a) -> Either String (String, b)
+  %                fmap f       :: (String, a) -> (String, b)
+  %                     f       :: a -> b
 
 \end{frame}
 
@@ -506,32 +509,32 @@ instance Functor Parse where
 
 
 \begin{frame}
-\frametitle{Applicative class}
+  \frametitle{Applicative class}
 
-\begin{lstlisting}
-pure :: Applicative f => a -> f a
-(<*>) Applicative f => f (a -> b) -> f a -> f b
+  \begin{lstlisting}
+  pure :: Applicative f => a -> f a
+  (<*>) Applicative f => f (a -> b) -> f a -> f b
 
-f x1          -> f <$> x1                      :: Applicative f => (                  a1 -> b)                            f a1 -> f b
-f x1 x2       -> f <$> x1 <*> x2               :: Applicative f => (            a2 -> a1 -> b)                 -> f a2 -> f a1 -> f b
-f x1 x2 x3    -> f <$> x1 <*> x2 <*> x3        :: Applicative f => (      a3 -> a2 -> a1 -> b)         -> f a3 -> f a2 -> f a1 -> f b
-f x1 x2 x3 x4 -> f <$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> a2 -> a1 -> b) -> f a4 -> f a3 -> f a2 -> f a1 -> f b
-\end{lstlisting}
+  f x1          -> f <$> x1                      :: Applicative f => (                  a1 -> b)                            f a1 -> f b
+  f x1 x2       -> f <$> x1 <*> x2               :: Applicative f => (            a2 -> a1 -> b)                 -> f a2 -> f a1 -> f b
+  f x1 x2 x3    -> f <$> x1 <*> x2 <*> x3        :: Applicative f => (      a3 -> a2 -> a1 -> b)         -> f a3 -> f a2 -> f a1 -> f b
+  f x1 x2 x3 x4 -> f <$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> a2 -> a1 -> b) -> f a4 -> f a3 -> f a2 -> f a1 -> f b
+  \end{lstlisting}
 
-% Do you see the pattern? Applicative allows arbitrary extension of Functor.
+  % Do you see the pattern? Applicative allows arbitrary extension of Functor.
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Applicative examples}
+  \frametitle{Applicative examples}
 
-\begin{lstlisting}
-(+) <$> parseInt <*> parseInt
--- parses two integers and returns their sum
+  \begin{lstlisting}
+  (+) <$> parseInt <*> parseInt
+  -- parses two integers and returns their sum
 
-(,) <$> parseA <*> parseB = parseAB
--- parses A and B, and returns them in a tuple
-\end{lstlisting}
+  (,) <$> parseA <*> parseB = parseAB
+  -- parses A and B, and returns them in a tuple
+  \end{lstlisting}
 
 \end{frame}
 
@@ -547,21 +550,21 @@ f x1 x2 x3 x4 -> f <$> x1 <*> x2 <*> x3 <*> x4 :: Applicative f => (a4 -> a3 -> 
 
 
 \begin{frame}
-\frametitle{Applicative instance for Parse}
+  \frametitle{Applicative instance for Parse}
 
-\begin{lstlisting}
+  \begin{lstlisting}
 
-instance Applicative Parse where
-  pure :: a -> Parse a
-  pure = Parser . (Right .) . flip (,)
+  instance Applicative Parse where
+    pure :: a -> Parse a
+    pure = Parser . (Right .) . flip (,)
 
-  (<*>) :: Parse (a -> b) -> Parse a -> Parse b
-  Parser f <*> Parser x = Parser (combine . f)
-    where
-      combine (Left   s1     ) = Left      s1
-      combine (Right (s2, f')) = fmap (fmap f') (x s2)
+    (<*>) :: Parse (a -> b) -> Parse a -> Parse b
+    Parser f <*> Parser x = Parser (combine . f)
+      where
+        combine (Left   s1     ) = Left      s1
+        combine (Right (s2, f')) = fmap (fmap f') (x s2)
 
-\end{lstlisting}
+  \end{lstlisting}
 
 \end{frame}
 
@@ -592,147 +595,150 @@ instance Applicative Parse where
 
 \begin{frame}
 
-\frametitle{Monad class}
-The core function for Monads is the bind function @(>>=)@. Here's one way to understand it:
+  \frametitle{Monad class}
+  The core function for Monads is the bind function @(>>=)@. Here's one way to understand it:
 
-\begin{lstlisting}
-(>>=)    :: t a -> (a -> t b) -> t b
-passedTo ::   a -> (a ->   b) ->   b
-x \`passedTo\` f = f x
-\end{lstlisting}
+  \begin{lstlisting}
+  (>>=)    :: t a -> (a -> t b) -> t b
+  passedTo ::   a -> (a ->   b) ->   b
+  x \`passedTo\` f = f x
+  \end{lstlisting}
 
-% That is, bind is just @passedTo@ where the function result is somehow encapsulated.
-% You may not be able to break the encapsulation, but you can often still apply a function.
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Monad example}
-
-\begin{lstlisting}[frame=single]
-(>>=) :: Either Bird Dog -> (Dog -> Either Bird Dog) -> Either Bird Dog
-\end{lstlisting}
-
-% What happens if we have the following?
-%
-% (>>=) (Left someBird) :: (Dog -> Either Bird Dog) -> Either Bird Dog
-%
-% Well, there's no obvious way to convert a Bird into a Dog, so a reasonable default
-% is to skip the @Dog -> Either Bird Dog@ and return @Left someBird@.
-% In other words, there's likely no good function with the type @Either Bird Dog -> Dog@,
-% since we could have a Bird.
-%
-% Thus a sane implementation (actually the default definition for Haskell) for (>>=) on Either
-% is the following:
-%
-% (>>=) (Left  l) f = Left     x
-% (>>=) (Right r) f = Right (f x)
-
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Monad instance for Parse}
-% Luckily, this is almost all we need to make a Monad instance for Parse:
-
-
-\begin{lstlisting}[frame=single]
-instance Monad Parse where
-  return :: a -> Parse a
-  return = pure
-
-  (>>=) :: Parse a -> (a -> Parse b) -> Parse b
-  Parser x >>= f = Parser $ \s -> x s >>= \ (s', y) -> either (const $ Left s) Right (runParser (f y) s')
-\end{lstlisting}
-
-% This is very similar to (<*>).
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Monad instance for Parse Cont.}
-% What it does is runs @parser1@, then passes the result to the function to get a new parser.
-
-For example:
-\begin{lstlisting}[frame=single]
-  Parser Password -> (Password -> Parser Secret) -> Parser Secret
-\end{lstlisting}
-
-% The first parser reads the password and the second can read a secret
-%  if it has the password. These can be combined to make something that
-%  parses the password and the secret, returning the secret.
-%
-%  This again means that if either fails, you will not get the result.
-%
-% All the code says is:
-%
-% Given a parser and a function that can make a new parser out of its result:
-%
-% if the parser succeeds
-%   then
-%     make a new parser with its result and the function
-%     run the new parser
-%     return the result
-%   else
-%     fail
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Alternative class}
-% We have just one more class: Alternative.
-%
-% Alternative is much easier than the previous classes.
-% A type with an Alternative instance just needs to be able to pass and fail.
-
-\begin{lstlisting}[frame=single]
-  empty :: Alternative f => f a
-  (<|>) :: Alternative f => f a -> f a -> f a
-\end{lstlisting}
-
-% empty is the value of type @f a@ that always fails. @(<|>)@ returns its
-% first argument if it passes, or its second if it fails.
-\end{frame}
-
-
-\begin{frame}
-
-\frametitle{Alternative instance for Parse}
-
-\begin{lstlisting}[frame=single]
-instance Alternative Parse where
-  empty :: Parse a
-  empty = Parser Left
-  -- A parser that consumes no input and always fails
-
-  (<|>) :: Parse a -> Parse a -> Parse a
-  Parser x <|> Parser y = Parser (either y Right . x)
-  -- If x returns (Right x') then return (Right x') else return y
-\end{lstlisting}
-
-% Here's an example application:
-%
-% parseFunctionName :: Parse (Name Function)
-% parseFunctionName = parseCamelCase <|> parse_snake_case
-
-% parse :: Parse a ->String ->Either String a
-% parse = fmap (fmap snd) . runParser
-%
-% All you do to run a parser is pull the function out of
-% the Parse type, run it on the string, and drop the leftovers.
-%
-% It would be nice to have it return an error, but it would get
-% more messy and this is supposed to be a pretty clean introduction.
+  % That is, bind is just @passedTo@ where the function result is somehow encapsulated.
+  % You may not be able to break the encapsulation, but you can often still apply a function.
 
 \end{frame}
 
 
 
 \begin{frame}
-\frametitle{End}
+  \frametitle{Monad example}
+
+  \begin{lstlisting}[frame=single]
+  (>>=) :: Either Bird Dog -> (Dog -> Either Bird Dog) -> Either Bird Dog
+  \end{lstlisting}
+
+  % What happens if we have the following?
+  %
+  % (>>=) (Left someBird) :: (Dog -> Either Bird Dog) -> Either Bird Dog
+  %
+  % Well, there's no obvious way to convert a Bird into a Dog, so a reasonable default
+  % is to skip the @Dog -> Either Bird Dog@ and return @Left someBird@.
+  % In other words, there's likely no good function with the type @Either Bird Dog -> Dog@,
+  % since we could have a Bird.
+  %
+  % Thus a sane implementation (actually the default definition for Haskell) for (>>=) on Either
+  % is the following:
+  %
+  % (>>=) (Left  l) f = Left     x
+  % (>>=) (Right r) f = Right (f x)
+
 \end{frame}
+
+
+\begin{frame}
+  \frametitle{Monad instance for Parse}
+  % Luckily, this is almost all we need to make a Monad instance for Parse:
+
+
+  \begin{lstlisting}[frame=single]
+  instance Monad Parse where
+    return :: a -> Parse a
+    return = pure
+
+    (>>=) :: Parse a -> (a -> Parse b) -> Parse b
+    Parser x >>= f = Parser $ \s -> x s >>= \ (s', y) -> either (const $ Left s) Right (runParser (f y) s')
+  \end{lstlisting}
+
+  % This is very similar to (<*>).
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Monad instance for Parse Cont.}
+  % What it does is runs @parser1@, then passes the result to the function to get a new parser.
+
+  For example:
+  \begin{lstlisting}[frame=single]
+    Parser Password -> (Password -> Parser Secret) -> Parser Secret
+  \end{lstlisting}
+
+  % The first parser reads the password and the second can read a secret
+  %  if it has the password. These can be combined to make something that
+  %  parses the password and the secret, returning the secret.
+  %
+  %  This again means that if either fails, you will not get the result.
+  %
+  % All the code says is:
+  %
+  % Given a parser and a function that can make a new parser out of its result:
+  %
+  % if the parser succeeds
+  %   then
+  %     make a new parser with its result and the function
+  %     run the new parser
+  %     return the result
+  %   else
+  %     fail
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Alternative class}
+  % We have just one more class: Alternative.
+  %
+  % Alternative is much easier than the previous classes.
+  % A type with an Alternative instance just needs to be able to pass and fail.
+
+  \begin{lstlisting}[frame=single]
+    empty :: Alternative f => f a
+    (<|>) :: Alternative f => f a -> f a -> f a
+  \end{lstlisting}
+
+  % empty is the value of type @f a@ that always fails. @(<|>)@ returns its
+  % first argument if it passes, or its second if it fails.
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Alternative instance for Parse}
+
+  \begin{lstlisting}[frame=single]
+  instance Alternative Parse where
+    empty :: Parse a
+    empty = Parser Left
+    -- A parser that consumes no input and always fails
+
+    (<|>) :: Parse a -> Parse a -> Parse a
+    Parser x <|> Parser y = Parser (either y Right . x)
+    -- If x returns (Right x') then return (Right x') else return y
+  \end{lstlisting}
+
+  % Here's an example application:
+  %
+  % parseFunctionName :: Parse (Name Function)
+  % parseFunctionName = parseCamelCase <|> parse_snake_case
+
+  % parse :: Parse a ->String ->Either String a
+  % parse = fmap (fmap snd) . runParser
+  %
+  % All you do to run a parser is pull the function out of
+  % the Parse type, run it on the string, and drop the leftovers.
+  %
+  % It would be nice to have it return an error, but it would get
+  % more messy and this is supposed to be a pretty clean introduction.
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{End}
+  %
+\end{frame}
+
+
 
 \end{document}
 
