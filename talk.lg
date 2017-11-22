@@ -151,10 +151,6 @@ Css: table.multline, table.multline-star {width:100%;}
 Css: td.gather {text-align:center; }
 Css: table.gather {width:100%;}
 Css: div.gather-star {text-align:center;}
-Css: .lstlisting .label{margin-right:0.5em; }
-Css: div.lstlisting{font-family: monospace; white-space: nowrap; margin-top:0.5em; margin-bottom:0.5em; }
-Css: div.lstinputlisting{ font-family: monospace; white-space: nowrap; }
-Css: .lstinputlisting .label{margin-right:0.5em;}
 Css: P.fancyvrb {white-space: nowrap; margin:0em;}
 --- characters ---
 Font("cmss","10","10","109")
