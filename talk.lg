@@ -162,9 +162,6 @@ Css: .lstlisting .label{margin-right:0.5em; }
 Css: div.lstlisting{font-family: monospace; white-space: nowrap; margin-top:0.5em; margin-bottom:0.5em; }
 Css: div.lstinputlisting{ font-family: monospace; white-space: nowrap; }
 Css: .lstinputlisting .label{margin-right:0.5em;}
---- needs --- talk.idv[2] ==> talk0x.png ---
---- needs --- talk.idv[3] ==> talk1x.png ---
---- needs --- talk.idv[4] ==> talk2x.png ---
 --- characters ---
 Font("rm-lmss","10","10","109")
 Font("rm-lmsso","10","10","109")
@@ -173,4 +170,3 @@ Font("lmmi","10","10","109")
 Font("lmsy","10","10","109")
 Font("rm-lmss","10","10","100")
 Font("rm-lmtt","10","10","109")
-Font("cmsy","10","10","109")
